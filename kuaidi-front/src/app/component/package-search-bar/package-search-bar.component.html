@@ -1,0 +1,3 @@
+<input type="text" placeholder="查询快递单号.." [(ngModel)]="inputPackageId">
+<button (click)="getTrackingInfo()">查询</button>
+<app-package-info *ngIf="this.displayInfo" [info]="this.displayInfo"></app-package-info>

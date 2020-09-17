@@ -1,0 +1,10 @@
+<!-- <a>显示所有</a> | <a>导入csv</a> | <a>批次管理</a> -->
+<!-- if cookie is not set, show login page else xxx-->
+<form ngNoForm action="http://localhost:3000/admin/login" method="POST">
+    <label for="pwd">输入你的密码:</label>
+    <input type="password" id="pwd" name="pwd" minlength="8">
+    <input type="submit" value="Submit">
+</form>
+
+<router-outlet>
+</router-outlet>
