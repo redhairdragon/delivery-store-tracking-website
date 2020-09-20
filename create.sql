@@ -5,6 +5,7 @@ USE PostOffice;
 DROP TABLE IF EXISTS Package;
 DROP TABLE IF EXISTS Batch;
 DROP TABLE IF EXISTS States;
+-- $2b$10$VrRXO3pOEhAlFhIlI2ckweErUEXD32tUc8lIFf4Y3sQrNsL6Gvexq
 -- create table Posts
 CREATE TABLE Package(
 	packageId VARCHAR(40),

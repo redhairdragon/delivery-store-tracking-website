@@ -13,6 +13,7 @@ import { ImportCsvComponent } from './component/admin-page/import-csv/import-csv
 import { BatchManagementComponent } from './component/admin-page/batch-management/batch-management.component';
 import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
 import { LoginComponent } from './component/admin-page/login/login.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoginComponent } from './component/admin-page/login/login.component';
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

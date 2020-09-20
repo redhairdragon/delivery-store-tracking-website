@@ -4,14 +4,10 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
 
-async function checkPassword(req, username, password) {
-    try {
-        if (result === null)
-            return false;
-        var authenticated = await bcrypt.compare(password, result.password);
-    } catch (e) {
-        console.error(e.message);
-    }
+async function checkPassword(plainpwd) {
+    var password = "$2b$10$VrRXO3pOEhAlFhIlI2ckweErUEXD32tUc8lIFf4Y3sQrNsL6Gvexq";
+    var authenticated = await bcrypt.compare(plainpwd, password);
+
     if (authenticated === true) {
         console.log("authentication passed checkPassword")
         return true;
@@ -26,7 +22,6 @@ async function getCookie(username) {
     const option = { header: { "typ": "JWT", "alg": "HS256" } };
     var payload = {
         "exp": Math.floor(Date.now() / 1000) + 2 * (60 * 60),
-        "usr": username
     };
     var key = "woshitengshenhaha";
     try {
@@ -38,9 +33,18 @@ async function getCookie(username) {
 }
 
 /* GET users listing. */
-router.post('/login', function(req, res, next) {
-    console.log("called")
-    res.send('respond with a resource');
+router.post('/login', async function(req, res, next) {
+
+    var authenticated = await checkPassword(req.body.password);
+    if (authenticated === true) {
+        var cookie = await getCookie();
+        // res.cookie("jwt", cookie);
+        console.log("authentication passed")
+        res.status(200).end()
+    } else {
+        console.log("authentication failed")
+        res.status(401).end()
+    }
 });
 
 module.exports = router;

@@ -10,7 +10,7 @@ export class DataAccessorService {
     if (this.validateInput(pkgId)!=null) 
       return {"error":this.validateInput(pkgId)};
     //查无此包裹
-
+    // consider progress in
     let infoArray = {
       "content": [{"Date":"1111","Description":"Departed From US"},
                   {"Date":"11223","Description":"Leaving Customer"}]
