@@ -14,6 +14,8 @@ import { BatchManagementComponent } from './component/admin-page/batch-managemen
 import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
 import { LoginComponent } from './component/admin-page/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     ImportCsvComponent,
     BatchManagementComponent,
     ListInfosComponent,
-    LoginComponent
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     FormsModule,
@@ -34,7 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

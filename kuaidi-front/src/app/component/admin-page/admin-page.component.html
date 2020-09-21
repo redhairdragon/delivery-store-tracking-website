@@ -1,5 +1,10 @@
 <!-- <a>显示所有</a> | <a>导入csv</a> | <a>批次管理</a> -->
 <!-- if cookie is not set, show login page else xxx-->
-<app-login></app-login>
-<router-outlet>
+<app-login *ngIf="!loggedIn"></app-login>
+<div *ngIf="loggedIn">
+    <button routerLink="./import">导入表格</button>
+    <button routerLink="./batch">批次处理</button>
+    <button routerLink="./list">展示列表</button>
+</div>
+<router-outlet *ngIf="loggedIn">
 </router-outlet>

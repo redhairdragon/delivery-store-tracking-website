@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { AdminAccessorService } from "../../service/admin-accessor.service"
 
 @Component({
   selector: 'app-admin-page',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminPageComponent implements OnInit {
 
-  constructor() { }
+  public loggedIn:boolean;
 
-  ngOnInit(): void {
+  constructor(
+    private adminService: AdminAccessorService,
+    private cookieService: CookieService
+    ) { 
+      this.loggedIn = this.hasCookie();
+    }
+
+  ngOnInit( ): void {
+
   }
 
+  hasCookie(): boolean{
+    return this.cookieService.check('kuaidi');
+  }
 }

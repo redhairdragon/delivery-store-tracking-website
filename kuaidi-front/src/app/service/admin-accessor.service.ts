@@ -15,6 +15,6 @@ export class AdminAccessorService {
     const loginHeader = new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.post<any>(environment.apiUrl + '/admin/login',
       { password: password_ },
-      { headers: loginHeader, observe: "response" });
+      { headers: loginHeader, observe: "response" , withCredentials: true});
   }
 }

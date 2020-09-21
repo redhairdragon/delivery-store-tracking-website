@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdminAccessorService } from "../../../service/admin-accessor.service"
+
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,7 +10,9 @@ import { AdminAccessorService } from "../../../service/admin-accessor.service"
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private adminService: AdminAccessorService) { }
+  constructor(
+    private adminService: AdminAccessorService,
+  ) { }
   public loginMessage: string;
   @Input() public password: string;
 
@@ -15,18 +20,20 @@ export class LoginComponent implements OnInit {
     this.loginMessage = '';
   }
   loginWithPassword() {
-    this.adminService.loginRequest(this.password)
+    var loginSubs = this.adminService.loginRequest(this.password)
       .subscribe({
-        next(response) {
+        next: (response) => {
+          console.log(response)
           this.loginMessage = "成功登入!"
         },
-        error(response) {
+        error: (response) => {
           if (response.status == 401)
             this.loginMessage = '登入失败嘞: 密码错误'
           else
             this.loginMessage = '登入失败嘞: 联系申'
         }
       })
+    setTimeout(() => loginSubs.unsubscribe(), 1000)
   }
 
 }
