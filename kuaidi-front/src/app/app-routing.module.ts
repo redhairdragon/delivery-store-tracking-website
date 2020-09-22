@@ -6,22 +6,31 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
 import { BatchManagementComponent } from './component/admin-page/batch-management/batch-management.component';
 import { ImportCsvComponent } from './component/admin-page/import-csv/import-csv.component';
 import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
+import { LoginComponent } from './component/admin-page/login/login.component';
+import { LoginGuard} from './guard/login.guard'
 
 const routes: Routes = [
   {
     path: "admin-page", component: AdminPageComponent,
     children: [
       {
-        path: 'import', // child route path
+        path: 'login',
+        component: LoginComponent, 
+      },
+      {
+        path: 'import',
         component: ImportCsvComponent, 
+        canActivate: [LoginGuard],
       },
       {
         path: 'batch',
         component: BatchManagementComponent,
+        canActivate: [LoginGuard],
       },
       {
         path: 'list',
-        component: ListInfosComponent,
+        component: ListInfosComponent, 
+        canActivate: [LoginGuard],
       },
     ],
   },

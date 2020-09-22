@@ -1,1 +1,22 @@
-<p>import-csv works!</p>
+<br>
+<label for="batch-name">输入批次名: </label>
+<input type="text" id="batch-name" [(ngModel)]="batchName">
+<br>
+<label for="file-uploader">上传文件: </label>
+<input type="file" accept=".xlsx, .txt" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)">
+<button (click)="reset()">清除</button>
+<a href="../../../../assets/new.xlsx"> 下载模板</a>
+<br>
+<p>{{dataValidationMessage}}</p>
+<table style="width:100%" *ngIf="showTable&&xlsData">
+    <tr>
+        <th *ngFor="let cat of this.xlsData[0];">{{cat}}</th>
+    </tr>
+    <tr *ngFor="let package of this.xlsData.slice(1);">
+        <th *ngFor="let prop of package">{{prop}}</th>
+    </tr>
+
+
+</table>
+<br>
+<button (click)="upload()">上传</button>

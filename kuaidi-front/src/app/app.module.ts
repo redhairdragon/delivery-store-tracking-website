@@ -16,6 +16,9 @@ import { LoginComponent } from './component/admin-page/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 import { CookieService } from 'ngx-cookie-service';
+import { AdminActionListComponent } from './component/admin-page/admin-action-list/admin-action-list.component';
+import { DatePipe } from '@angular/common'
+
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { CookieService } from 'ngx-cookie-service';
     BatchManagementComponent,
     ListInfosComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AdminActionListComponent
   ],
   imports: [
     FormsModule,
@@ -37,7 +41,7 @@ import { CookieService } from 'ngx-cookie-service';
     CommonModule,
     HttpClientModule,
   ],
-  providers: [CookieService],
+  providers: [CookieService,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

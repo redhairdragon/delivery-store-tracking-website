@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdminAccessorService } from "../../../service/admin-accessor.service"
-
+import { Router, ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private adminService: AdminAccessorService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) { }
   public loginMessage: string;
   @Input() public password: string;
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           console.log(response)
           this.loginMessage = "成功登入!"
+          this.router.navigate(['../list'],{relativeTo: this.activatedRoute});
         },
         error: (response) => {
           if (response.status == 401)

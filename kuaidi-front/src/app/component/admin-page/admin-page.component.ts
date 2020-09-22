@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { AdminAccessorService } from "../../service/admin-accessor.service"
+import { Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-admin-page',
@@ -9,20 +9,23 @@ import { AdminAccessorService } from "../../service/admin-accessor.service"
 })
 export class AdminPageComponent implements OnInit {
 
-  public loggedIn:boolean;
-
   constructor(
     private adminService: AdminAccessorService,
-    private cookieService: CookieService
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     ) { 
-      this.loggedIn = this.hasCookie();
     }
 
   ngOnInit( ): void {
-
+    if(this.isLoggedIn())
+      this.router.navigate(['./list'],{relativeTo: this.activatedRoute});
+    else
+      this.router.navigate(['./login'],{relativeTo: this.activatedRoute});
+  }
+  isLoggedIn(): boolean{
+    return this.adminService.hasCookie()
   }
 
-  hasCookie(): boolean{
-    return this.cookieService.check('kuaidi');
-  }
+
+
 }
