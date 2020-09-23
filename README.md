@@ -12,9 +12,9 @@ Work to do:
 
 ~~UI for uploading CSV~~
 
-API for uploading CSV
+~~API for uploading CSV~~
 
-DB for uploading CSV 
+~~DB for uploading CSV~~ 
 
 
 
