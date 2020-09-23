@@ -24,7 +24,7 @@ export class DataAccessorService {
       return "单号只应该有数字字母，再检查一下吧."
     if(!pkgId)
       return "您还没有输入单号哦!"
-    if(pkgId.length != "233".length)
+    if(pkgId.length != "cl86008927us".length)
       return "您的单号长度对不上呀!"
     return null
   }

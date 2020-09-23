@@ -8,14 +8,26 @@ import { AdminAccessorService } from './service/admin-accessor.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public adminAccessLink:string;
+  public adminAccessLink: string;
+  title = 'kuaidi-front';
+
   constructor(
     private adminService: AdminAccessorService,
+    private router: Router,
     private route: ActivatedRoute,
-  ) {
+  ) { }
+
+  getAdminAccessLink() {
+    return this.adminService.hasCookie() ? "/admin-page/list" : "/admin-page/login"
   }
-  getAdminAccessLink(){
-    return this.adminService.hasCookie()?"/admin-page/list":"/admin-page/login"
+
+  checkLoginStatus() {
+    this.adminService.loginRequest("").subscribe({
+        next: () => { },
+        error: (res) => {
+          this.adminService.clearCookie()
+          this.router.navigate(["/admin-page/login"])
+        }})
   }
-  title = 'kuaidi-front';
+
 }

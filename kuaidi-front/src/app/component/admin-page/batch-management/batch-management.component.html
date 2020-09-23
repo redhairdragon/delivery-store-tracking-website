@@ -1,1 +1,13 @@
-<p>batch-management works!</p>
+<br>
+<button (click)="test()">测试</button>
+<div class="mat-app-background basic-container" style="width:30%">
+    <mat-selection-list [multiple]="false" #batches>
+        <mat-list-option *ngFor="let batch of batchNames" [value]="batch">
+            {{batch}}
+        </mat-list-option>
+    </mat-selection-list>
+</div>
+
+<p>
+    Option selected: {{batches.selectedOptions.selected[0]?.value}}
+</p>

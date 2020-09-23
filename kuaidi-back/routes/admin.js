@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
+const { pid } = require('process');
 
 let password = "";
 var hashedpassword = "$2b$10$VrRXO3pOEhAlFhIlI2ckweErUEXD32tUc8lIFf4Y3sQrNsL6Gvexq";
@@ -76,18 +77,133 @@ router.post('/login', async function(req, res, next) {
     }
 });
 
+router.get('/batchNameCheck', async function(req, res, next) {
+    if (!authenticateCookie(req.cookies.kuaidi)) {
+        res.status(401).end()
+        return
+    }
+    let query = "select 1 from Batch where batchName = ? limit 1;";
+    let batchName = req.query.batchName;
+    let dbConn = req.app.get("mysqlConn")
+
+    await dbConn.query(query, [batchName], function(error, results, fields) {
+        console.log(results)
+        if (error) {
+            res.status(400).send("db update fail").end()
+            return
+        }
+        if (results.length == 0)
+            res.status(200).send(false).end()
+        else
+            res.status(200).send(true).end()
+        return
+    })
+});
+
+// 如果package存在，会被更新 TABLE:Batch Package
+// 如果batchName存在，会删除旧的batch里的所有东西 TABLE:Batch Package
 router.post('/uploadBatch', async function(req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
     }
-    console.log(req.body)
+    let data = req.body.data
+    let batchName = req.body.batchName;
+    if (!batchName) {
+        res.status(422).send("batch name is not received").end()
+        return
+    }
+
+    if (!req.body.data) {
+        res.status(422).send("table data is not received").end()
+        return
+    }
+
+    if (batchName.length > 40) {
+        res.status(422).send("batch name too long").end()
+        return
+    }
+    const categories = ['seq', 'packageId', 'channel', 'customerName', 'customerPhone', 'brandName', 'brandNameChinese', 'quantity', 'unitPrice', 'dimension', 'unit', 'weight', 'insuredAmount', 'insuranceFee', 'customTax', 'receiverName', 'receiverPhone', 'receiverProvince', 'receiverCity', 'receiverAddress', 'receiverZIP', 'receiverId', 'transferCompany', 'transferPackageId', 'created', 'SKU', 'comment']
+    for (let i = 1; i < data.length; ++i) {
+        if (data[i].length > categories.length) {
+            res.status(422).send("too many items on row " + i).end()
+            return
+        }
+    }
+
+    let dbConn = req.app.get("mysqlConn")
+    deleteBatch(batchName, dbConn)
+        //add packages into Package table
+    for (let i = 1; i < data.length; ++i) {
+        let fields = []
+        let values = []
+        for (let j = 0; j < data[i].length; ++j) {
+            if (data[i][j] !== null) {
+                fields.push(categories[j])
+                if (categories[j] == 'created') {
+                    if (Date.parse(data[i][j]) === NaN) {
+                        res.status(422).send("invalid timestamp").end();
+                        return;
+                    }
+                    let date = new Date(data[i][j]).toISOString().slice(0, 19).replace('T', ' ');
+                    values.push(dbConn.escape(date))
+                } else
+                    values.push(dbConn.escape(data[i][j]))
+            }
+        }
+        if (fields.length > 0) {
+            let query = "replace into Package (" +
+                fields.join() + ")" +
+                " VALUES (" +
+                values.join() +
+                ")"
+            dbConn.query(query, function(error, results, fields) {
+                if (error) {
+                    res.status(400).send("db update fail").end()
+                    return
+                }
+            });
+        }
+    }
+
+    let batchCreateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    //add batchInfo to Batch table
+    for (let i = 1; i < data.length; ++i) {
+        const query = "replace into Batch (batchName, packageId, created) VALUES (?, ?, ?)";
+        dbConn.query(query, [batchName, data[i][1], batchCreateTime], function(error, results, fields) {
+            if (error) {
+                res.status(400).send("db update fail").end()
+                return
+            }
+        })
+    }
     res.status(200).end()
 });
 
+function deleteBatch(batchName, dbConn) {
+    let deletePackageQuery =
+        "delete from Package where packageId in ( select packageId from Batch where batchName = ?);"
+    dbConn.query(deletePackageQuery, [batchName], function(error, results, fields) {});
+
+    let deleteBatchQuery = "DELETE FROM Batch WHERE batchName=?";
+    dbConn.query(deleteBatchQuery, [batchName], function(error, results, fields) {})
+}
 
 
-
-
+router.get('/batchList', async function(req, res, next) {
+    if (!authenticateCookie(req.cookies.kuaidi)) {
+        res.status(401).end()
+        return
+    }
+    let dbConn = req.app.get("mysqlConn")
+    let query = "select distinct batchName from Batch;";
+    let batches = []
+    dbConn.query(query, [], function(error, results, fields) {
+        results.forEach(result => {
+            batches.push(result.batchName)
+        })
+        res.status(200).send(batches).end()
+    });
+})
 
 module.exports = router;

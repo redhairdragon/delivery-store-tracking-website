@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+// import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class AdminAccessorService {
 
   constructor(
     private http: HttpClient,
+    // private router: Router,
     private cookieService: CookieService) {
   }
 
@@ -33,4 +35,21 @@ export class AdminAccessorService {
     return this.cookieService.check('kuaidi');
   }
 
+  clearCookie(){
+    this.cookieService.delete('kuaidi',"/")
+  }
+  
+  checkBatchNameExistRequest(batchName:string){
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+    let params = new HttpParams().set("batchName",batchName)
+    return this.http.get<any>(environment.apiUrl + '/admin/batchNameCheck',
+      { headers: header, observe: 'body', "params": params, withCredentials: true });
+  }
+
+  getBatchListRequest(){
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+    return this.http.get<any>(environment.apiUrl + '/admin/batchList',
+      { headers: header, observe: 'body', withCredentials: true })
+  }
 }
+

@@ -6,8 +6,18 @@ var logger = require('morgan');
 var cors = require('cors')
 
 var adminRouter = require('./routes/admin');
+var mysql = require('mysql');
+var mysqlConn = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'woaiKuaidi!23',
+    database: 'PostOffice'
+});
+mysqlConn.connect();
+
 
 var app = express();
+app.set('mysqlConn', mysqlConn);
 app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))
 
 // view engine setup

@@ -1,45 +1,56 @@
-CREATE DATABASE IF NOT EXISTS PostOffice;
+CREATE DATABASE IF NOT EXISTS PostOffice default character set utf8 collate utf8_general_ci;
 -- select database
 USE PostOffice;
 -- drop existing tables
 DROP TABLE IF EXISTS Package;
 DROP TABLE IF EXISTS Batch;
 DROP TABLE IF EXISTS States;
--- $2b$10$VrRXO3pOEhAlFhIlI2ckweErUEXD32tUc8lIFf4Y3sQrNsL6Gvexq
 -- create table Posts
 CREATE TABLE Package(
+	seq INTEGER,
 	packageId VARCHAR(40),
-	customerName VARCHAR(40),
-	brandName VARCHAR(40),
-	brandNameChinese VARCHAR(40),
-	catergory VARCHAR(40),
-	senderPhone VARCHAR(40),
-	quantity INTEGER,
-	unitPrice FLOAT,
-	weight FLOAT,
-	insuranceFee FLOAT,
-	insuredAmount FLOAT,
-	customTax FLOAT,
-	receiverPhone VARCHAR(40),
-	receiverProvince VARCHAR(40),
-	receiverCity VARCHAR(40),
-	receiverAddress VARCHAR(500),
-	receiverZIP VARCHAR(20),
-	comment VARCHAR(500),
+	channel VARCHAR(40),
+	customerName VARCHAR(40) DEFAULT "无",
+	customerPhone VARCHAR(40) DEFAULT "无",
+	brandName VARCHAR(40) DEFAULT "无",
+	brandNameChinese VARCHAR(40) DEFAULT "无",
+	quantity INTEGER DEFAULT -1,
+	unitPrice FLOAT DEFAULT 0.,
+	dimension VARCHAR(40) DEFAULT "无",
+	unit VARCHAR(40) DEFAULT "无",
+	weight FLOAT DEFAULT 0.,
+	insuredAmount FLOAT DEFAULT 0.,
+	insuranceFee FLOAT DEFAULT 0.,
+	customTax FLOAT DEFAULT 0.,
+	receiverName VARCHAR(40) DEFAULT "无",
+	receiverPhone VARCHAR(40) DEFAULT "无",
+	receiverProvince VARCHAR(40) DEFAULT "无",
+	receiverCity VARCHAR(40) DEFAULT "无",
+	receiverAddress VARCHAR(500) DEFAULT "无",
+	receiverZIP VARCHAR(20) DEFAULT "无",
+	receiverId VARCHAR(20) DEFAULT "无",
+	transferCompany VARCHAR(40) DEFAULT "无",
+	transferPackageId VARCHAR(40) DEFAULT "无",
 	created TIMESTAMP DEFAULT '2000-01-01 00:00:00',
-	PRIMARY KEY(customerName, packageId)
+	SKU VARCHAR(40) DEFAULT "无",
+	comment VARCHAR(500) DEFAULT "",
+	UNIQUE (packageId, seq),
+	PRIMARY KEY(packageId)
 ) default charset = utf8;
-
 CREATE TABLE Batch(
 	packageId VARCHAR(40),
-	batchId INTEGER,
-	modified TIMESTAMP DEFAULT '2000-01-01 00:00:00',
+	batchName VARCHAR(40),
 	created TIMESTAMP DEFAULT '2000-01-01 00:00:00',
-	PRIMARY KEY(batchid)
-);
-
-CREATE TABLE States(
-	packageId VARCHAR(40),
-	description VARCHAR(100),
-	updated TIMESTAMP DEFAULT '2000-01-01 00:00:00'
+	PRIMARY KEY(packageId),
+	INDEX batchIndex (batchName(40))
 ) default charset = utf8;
+CREATE TABLE States(
+	batchName VARCHAR(40),
+	description VARCHAR(100),
+	updated TIMESTAMP DEFAULT '2000-01-01 00:00:00',
+	PRIMARY KEY(batchName, description)
+) default charset = utf8;
+-- [mysql]
+-- default-character-set=utf8
+-- [mysqld]
+-- character-set-server=utf8
