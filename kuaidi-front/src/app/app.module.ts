@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,15 @@ import { CookieService } from 'ngx-cookie-service';
 import { AdminActionListComponent } from './component/admin-page/admin-action-list/admin-action-list.component';
 import { DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -33,7 +41,7 @@ import {MatListModule} from '@angular/material/list';
     ListInfosComponent,
     LoginComponent,
     PageNotFoundComponent,
-    AdminActionListComponent
+    AdminActionListComponent,
   ],
   imports: [
     FormsModule,
@@ -42,12 +50,23 @@ import {MatListModule} from '@angular/material/list';
     CommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatListModule
+    MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDividerModule,
+    MatSidenavModule,
+    MatCheckboxModule
   ],
   providers: [
     CookieService,
     DatePipe,
+    MatDatepickerModule,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {  
+}

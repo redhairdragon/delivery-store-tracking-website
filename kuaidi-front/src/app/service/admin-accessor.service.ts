@@ -51,5 +51,16 @@ export class AdminAccessorService {
     return this.http.get<any>(environment.apiUrl + '/admin/batchList',
       { headers: header, observe: 'body', withCredentials: true })
   }
+  updateBatchStatesRequest(batchName:string, statesArray:string[], timesArray:any[] ){
+    let payload = {
+      "batchName":batchName,
+      "states":statesArray,
+      "times":timesArray
+    }
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+    return this.http.post<any>(environment.apiUrl + '/admin/updateBatchStates',
+      { payload: payload },
+      { headers: header, observe: "response", withCredentials: true });
+  }
 }
 
