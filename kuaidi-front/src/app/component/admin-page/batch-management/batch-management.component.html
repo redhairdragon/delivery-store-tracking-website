@@ -2,7 +2,7 @@
 <button (click)="fetchBatchList()">刷新</button>
 <div class="basic-container" style="width:20%">
     <mat-selection-list [multiple]="false" #batches>
-        <mat-list-option *ngFor="let batch of batchNames" [value]="batch" (click)="test()">
+        <mat-list-option *ngFor="let batch of batchNames" [value]="batch" (click)="resetForm()">
             {{batch}}
         </mat-list-option>
     </mat-selection-list>
@@ -21,10 +21,10 @@
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput [disabled]="this.date[x].disabled" type="time" [(ngModel)]="time[x]">
+                <input matInput [disabled]="!this.changed[x]" type="time" [(ngModel)]="time[x]">
             </mat-form-field>
 
-            <mat-checkbox (click)="disableForm(x)">修改</mat-checkbox>
+            <mat-checkbox [checked]="changed[x]" (change)="toggleModification(x,$event)">修改</mat-checkbox>
         </mat-list-item>
 
     </mat-list>

@@ -32,10 +32,15 @@ export class BatchManagementComponent implements OnInit {
     clock.setHours(new Date().getHours())
     clock.setMinutes(new Date().getMinutes())
     let timeString = clock.toLocaleTimeString("en-GB").substr(0, 5);
+
+    let currentDate = new Date();
+    currentDate.setHours(0)
+    currentDate.setMinutes(0)
+
     this.shippingStates.forEach(() => {
       this.changed.push(false)
-      this.date.push(new FormControl(new Date()))
-      this.date[this.date.length-1].disable()
+      this.date.push(new FormControl(currentDate))
+      this.date[this.date.length - 1].disable()
       this.time.push(timeString)
     })
   }
@@ -55,30 +60,47 @@ export class BatchManagementComponent implements OnInit {
     })
 
   }
-  test() {
-    console.log(this.batchSelectionMenu.selectedOptions.selected[0]?.value)
-    console.log(this.date)
-    console.log(this.time)
-    console.log(this.changed)
+  resetForm() {
     let clock = new Date(0)
     clock.setHours(new Date().getHours())
     clock.setMinutes(new Date().getMinutes())
     let timeString = clock.toLocaleTimeString("en-GB").substr(0, 5);
+
+    let currentDate = new Date();
+    currentDate.setHours(0)
+    currentDate.setMinutes(0)
+
     this.time.forEach((x, index, time) => { time[index] = timeString })
-
+    this.changed.forEach((x, index, changed) => { changed[index] = false })
+    this.date.forEach((x, index, date) => {
+      date[index] = new FormControl(currentDate)
+      date[index].disable()
+    })  
   }
-  updateBatchStates() {
 
+  updateBatchStates() {
     let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
     let states = this.shippingStates;
-    this.adminService.updateBatchStatesRequest(batchName, states, this.time)
+    let timeArray = Array<string>(this.time.length);
+    for(let i = 0;i < this.time.length;i++){
+      let timestamp:Date = this.date[i].value
+      timestamp.setMinutes(parseInt(this.time[i].substr(3,2)))
+      timestamp.setHours(parseInt(this.time[i].substr(0,2)))
+      timeArray[i] = timestamp.toISOString().slice(0, 19).replace('T', ' ')
+    }
+    this.adminService.updateBatchStatesRequest(batchName, states, timeArray).subscribe({
+      next:(resp)=>{
+
+      },error:(resp)=>{
+
+      }})
 
   }
-  disableForm(idx) {
-    if (this.date[idx].disabled)
+  toggleModification(idx: number,event: { checked: any; }) {
+    this.changed[idx] =event.checked;
+    if (event.checked)
       this.date[idx].enable()
     else
       this.date[idx].disable()
   }
-
 }
