@@ -13,7 +13,9 @@ export class BatchManagementComponent implements OnInit {
 
   @ViewChild('batches') batchSelectionMenu;
 
+  public stateMessage: string = "";
   public changed: boolean[] = [];
+  public deletable: boolean[] = [];
   public date: FormControl[] = [];
   public time: string[] = [];
   public batchNames: string[] = [];
@@ -42,6 +44,7 @@ export class BatchManagementComponent implements OnInit {
       this.date.push(new FormControl(currentDate))
       this.date[this.date.length - 1].disable()
       this.time.push(timeString)
+      this.deletable.push(false)
     })
   }
 
@@ -75,32 +78,47 @@ export class BatchManagementComponent implements OnInit {
     this.date.forEach((x, index, date) => {
       date[index] = new FormControl(currentDate)
       date[index].disable()
-    })  
+    })
   }
 
   updateBatchStates() {
+    if (this.changed.reduce((a,b)=>{return !b?a:++a},0)==0)
+      return
+
     let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
-    let states = this.shippingStates;
-    let timeArray = Array<string>(this.time.length);
-    for(let i = 0;i < this.time.length;i++){
-      let timestamp:Date = this.date[i].value
-      timestamp.setMinutes(parseInt(this.time[i].substr(3,2)))
-      timestamp.setHours(parseInt(this.time[i].substr(0,2)))
-      timeArray[i] = timestamp.toISOString().slice(0, 19).replace('T', ' ')
+    let states = [];
+    let timeArray = [];
+    for (let i = 0; i < this.time.length; i++) {
+      if (!this.changed[i]) continue;
+      let timestamp: Date = this.date[i].value
+      timestamp.setMinutes(parseInt(this.time[i].substr(3, 2)))
+      timestamp.setHours(parseInt(this.time[i].substr(0, 2)))
+      timeArray.push(timestamp.toISOString().slice(0, 19).replace('T', ' '))
+      states.push(this.shippingStates[i])
     }
     this.adminService.updateBatchStatesRequest(batchName, states, timeArray).subscribe({
-      next:(resp)=>{
-
-      },error:(resp)=>{
-
-      }})
-
+      next: (resp) => {
+        this.stateMessage = "更新成功"
+        this.resetForm()
+      }, error: (resp) => {
+        this.stateMessage = resp.body
+      }
+    })
   }
-  toggleModification(idx: number,event: { checked: any; }) {
-    this.changed[idx] =event.checked;
+  
+  toggleModification(idx: number, event: { checked: any; }) {
+    this.changed[idx] = event.checked;
     if (event.checked)
       this.date[idx].enable()
     else
       this.date[idx].disable()
   }
+  test(){
+    this.adminService.getBatchStateRequest("h2").subscribe(
+      resp=>{
+        console.log(resp)
+      }
+    )
+  }
 }
+

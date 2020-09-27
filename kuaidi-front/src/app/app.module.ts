@@ -28,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCheckboxModule } from '@angular/material/checkbox';
+import {MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     MatDividerModule,
     MatSidenavModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatButtonModule
   ],
   providers: [
     CookieService,

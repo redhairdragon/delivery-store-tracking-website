@@ -221,13 +221,18 @@ router.post('/updateBatchStates', async function(req, res, next) {
         res.status(401).end()
         return
     }
-    let payload = req.body.payload
+    let payload = req.body.payload;
+
     if (!payload.batchName) {
         res.status(402).send("缺少batch name,不该出现,联系申").end()
         return
     }
     if (payload.states.length != payload.times.length) {
         res.status(402).send("时间和状态长度不一致,不该出现,联系申").end()
+        return
+    }
+    if (payload.states.length == 0) {
+        res.status(200).end()
         return
     }
 
@@ -251,7 +256,7 @@ router.post('/updateBatchStates', async function(req, res, next) {
             }
             dbConn.query(query.substr(0, query.length - 1), params, function(error, results) {
                 if (error) {
-                    res.status(500).end();
+                    res.status(500).send("数据库坏了:2,联系申").end();
                     return;
                 }
                 res.status(200).end();
@@ -260,4 +265,25 @@ router.post('/updateBatchStates', async function(req, res, next) {
         }
     })
 })
+
+
+
+router.get('/batchStates', function(req, res, next) {
+    if (!authenticateCookie(req.cookies.kuaidi)) {
+        res.status(401).end()
+        return
+    }
+    let dbConn = req.app.get("mysqlConn")
+    let query = "select description, updated from States where batchName = ?;";
+    dbConn.query(query, [req.query.batchName], function(error, results, fields) {
+        // results.forEach(result => {
+        //     batches.push(result.batchName)
+        // })
+        console.log(results)
+        console.log(error)
+        res.status(200).send("").end()
+    });
+})
+
+
 module.exports = router;
