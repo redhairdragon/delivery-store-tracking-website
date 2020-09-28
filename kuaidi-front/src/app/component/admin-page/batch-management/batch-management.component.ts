@@ -3,7 +3,6 @@ import { AdminAccessorService } from 'src/app/service/admin-accessor.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-batch-management',
   templateUrl: './batch-management.component.html',
@@ -21,9 +20,10 @@ export class BatchManagementComponent implements OnInit {
   public batchNames: string[] = [];
   public shippingStates: string[] = [
     "1.送往仓库",
-    "2.飞机起飞",
-    "3.抵达海关",
-    "4.海关清关"
+    "2.到达机场",
+    "3.飞机起飞",
+    "4.抵达海关",
+    "5.海关清关"
   ];
 
   constructor(
@@ -61,8 +61,8 @@ export class BatchManagementComponent implements OnInit {
         this.router.navigate(["/admin-page/login"])
       }
     })
-
   }
+
   resetForm() {
     let clock = new Date(0)
     clock.setHours(new Date().getHours())
@@ -73,17 +73,33 @@ export class BatchManagementComponent implements OnInit {
     currentDate.setHours(0)
     currentDate.setMinutes(0)
 
-    this.time.forEach((x, index, time) => { time[index] = timeString })
     this.changed.forEach((x, index, changed) => { changed[index] = false })
+    this.time.forEach((x, index, time) => { time[index] = timeString })
     this.date.forEach((x, index, date) => {
-      date[index] = new FormControl(currentDate)
+      this.date[index] = new FormControl(currentDate)
       date[index].disable()
+      this.deletable[index] = false;
     })
+
+    //fetch from server
+    let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
+    this.adminService.getBatchStateRequest(batchName).subscribe({
+      error: err => this.stateMessage = err,
+      next: resp => {
+        this.shippingStates.forEach((state, index) => {
+          if (resp[state]) {
+            let storedDate = new Date(resp[state])
+            this.deletable[index] = true;
+            this.date[index].setValue(storedDate)
+            this.time[index] = storedDate.toLocaleTimeString("en-GB").substr(0, 5);
+          }})}})
   }
 
   updateBatchStates() {
-    if (this.changed.reduce((a,b)=>{return !b?a:++a},0)==0)
+    if (this.changed.reduce((a, b) => { return !b ? a : ++a }, 0) == 0) {
+      this.stateMessage = "什么都没有改动:)"
       return
+    }
 
     let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
     let states = [];
@@ -105,7 +121,7 @@ export class BatchManagementComponent implements OnInit {
       }
     })
   }
-  
+
   toggleModification(idx: number, event: { checked: any; }) {
     this.changed[idx] = event.checked;
     if (event.checked)
@@ -113,12 +129,27 @@ export class BatchManagementComponent implements OnInit {
     else
       this.date[idx].disable()
   }
-  test(){
-    this.adminService.getBatchStateRequest("h2").subscribe(
-      resp=>{
-        console.log(resp)
-      }
-    )
+
+  deleteStateEntry(stateDescription: string, index: number) {
+    let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
+
+    this.adminService.deleteBatchStateRequest(batchName, stateDescription).subscribe(
+      resp => {
+        this.deletable[index] = false;
+        let clock = new Date(0)
+        clock.setHours(new Date().getHours())
+        clock.setMinutes(new Date().getMinutes())
+        let timeString = clock.toLocaleTimeString("en-GB").substr(0, 5);
+
+        let currentDate = new Date();
+        currentDate.setHours(0)
+        currentDate.setMinutes(0)
+
+        this.date[index] = new FormControl(currentDate)
+        this.time[index] = timeString
+
+        this.date[index].disable();
+      })
   }
 }
 

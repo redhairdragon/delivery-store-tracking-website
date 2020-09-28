@@ -26,16 +26,15 @@
 
             <mat-checkbox [checked]="changed[x]" (change)="toggleModification(x,$event)">修改</mat-checkbox>
 
-            <button mat-button color="warn">删除</button>
+            <button mat-button color="warn"  [disabled] = "!deletable[x]" (click)="deleteStateEntry(state,x)">
+                删除
+            </button>
 
         </mat-list-item>
     </mat-list>
 
-    <button (click)="updateBatchStates() ">
+    <button (click)="updateBatchStates()">
         上传
     </button>
 </div>
-<button (click)="test() ">
-    test
-</button>
 <p>{{stateMessage}}</p>

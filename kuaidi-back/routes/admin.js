@@ -62,7 +62,6 @@ router.post('/login', async function(req, res, next) {
 
     try {
         var authenticated = await checkPassword(req.body.password);
-        console.log(1)
         if (authenticated === true) {
             var cookie = await getCookie(req.body.password);
             res.cookie("kuaidi", cookie);
@@ -87,7 +86,6 @@ router.get('/batchNameCheck', async function(req, res, next) {
     let dbConn = req.app.get("mysqlConn")
 
     await dbConn.query(query, [batchName], function(error, results, fields) {
-        console.log(results)
         if (error) {
             res.status(400).send("db update fail").end()
             return
@@ -276,14 +274,31 @@ router.get('/batchStates', function(req, res, next) {
     let dbConn = req.app.get("mysqlConn")
     let query = "select description, updated from States where batchName = ?;";
     dbConn.query(query, [req.query.batchName], function(error, results, fields) {
-        // results.forEach(result => {
-        //     batches.push(result.batchName)
-        // })
-        console.log(results)
-        console.log(error)
-        res.status(200).send("").end()
+        if(error){
+            res.send("数据库出错联系申,提取批次信息")
+            return}
+        let states = {}
+        results.forEach(function(result){
+            states[result.description]=result.updated
+        })
+        res.status(200).send(states).end()
+        return
     });
 })
 
+router.delete('/deleteBatchState',function(req,res){
+    let dbConn = req.app.get("mysqlConn")
+    const query = "delete from States where description = ? and batchName = ?;"
+    dbConn.query(query, [req.query.description,req.query.batchName], function(error, results, fields) {
+        if(error){
+            console.log("******")
+            res.send("数据库出错联系申,提取批次信息").status(500).end()
+            return
+        }
+        console.log(results)
+        res.status(200).end()
+        return
+    });
+})
 
 module.exports = router;

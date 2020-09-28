@@ -35,27 +35,27 @@ export class AdminAccessorService {
     return this.cookieService.check('kuaidi');
   }
 
-  clearCookie(){
-    this.cookieService.delete('kuaidi',"/")
+  clearCookie() {
+    this.cookieService.delete('kuaidi', "/")
   }
-  
-  checkBatchNameExistRequest(batchName:string){
+
+  checkBatchNameExistRequest(batchName: string) {
     const header = new HttpHeaders({ 'Content-Type': 'application/json' })
-    let params = new HttpParams().set("batchName",batchName)
+    let params = new HttpParams().set("batchName", batchName)
     return this.http.get<any>(environment.apiUrl + '/admin/batchNameCheck',
       { headers: header, observe: 'body', "params": params, withCredentials: true });
   }
 
-  getBatchListRequest(){
+  getBatchListRequest() {
     const header = new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.get<any>(environment.apiUrl + '/admin/batchList',
       { headers: header, observe: 'body', withCredentials: true })
   }
-  updateBatchStatesRequest(batchName:string, statesArray:string[], timesArray:any[] ){
+  updateBatchStatesRequest(batchName: string, statesArray: string[], timesArray: any[]) {
     let payload = {
-      "batchName":batchName,
-      "states":statesArray,
-      "times":timesArray
+      "batchName": batchName,
+      "states": statesArray,
+      "times": timesArray
     }
     const header = new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.post<any>(environment.apiUrl + '/admin/updateBatchStates',
@@ -63,11 +63,18 @@ export class AdminAccessorService {
       { headers: header, observe: "response", withCredentials: true });
   }
 
-  getBatchStateRequest(batchName:string){
+  getBatchStateRequest(batchName: string) {
     const header = new HttpHeaders({ 'Content-Type': 'application/json' })
-    let param = {"batchName":batchName};
+    let param = { "batchName": batchName };
     return this.http.get<any>(environment.apiUrl + '/admin/batchStates',
-      { headers: header, observe: 'response', withCredentials: true , 'params':param})
+      { headers: header, observe: 'body', withCredentials: true, 'params': param })
+  }
+
+  deleteBatchStateRequest(batchName: string, description: string) {
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+    let params = { "batchName": batchName, "description": description }
+    return this.http.delete<any>(environment.apiUrl + `/admin/deleteBatchState`,
+      { headers: header, observe: 'response', withCredentials: true, "params": params })
   }
 
 }

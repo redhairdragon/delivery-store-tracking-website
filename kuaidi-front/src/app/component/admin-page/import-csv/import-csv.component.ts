@@ -93,7 +93,7 @@ export class ImportCsvComponent implements OnInit {
 
     var packageIdSet = new Set()
     for (let i = 1; i < this.xlsData.length; ++i)
-      packageIdSet.add(this.xlsData[i][1])
+      packageIdSet.add(this.xlsData[i][1].toString())
     if (packageIdSet.size < this.xlsData.length - 1) {
       this.errorMessage = "请重新上传,原因: " + "单号你怎么还能输重复了？"
       return false

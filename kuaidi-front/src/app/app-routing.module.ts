@@ -7,7 +7,7 @@ import { BatchManagementComponent } from './component/admin-page/batch-managemen
 import { ImportCsvComponent } from './component/admin-page/import-csv/import-csv.component';
 import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
 import { LoginComponent } from './component/admin-page/login/login.component';
-import { LoginGuard} from './guard/login.guard'
+import { LoginGuard } from './guard/login.guard'
 
 const routes: Routes = [
   {
@@ -15,11 +15,11 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: LoginComponent, 
+        component: LoginComponent,
       },
       {
         path: 'import',
-        component: ImportCsvComponent, 
+        component: ImportCsvComponent,
         canActivate: [LoginGuard],
       },
       {
@@ -29,7 +29,7 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ListInfosComponent, 
+        component: ListInfosComponent,
         canActivate: [LoginGuard],
       },
     ],

@@ -18,11 +18,11 @@ Work to do:
 
 
 
-UI for updating batch states
+~~UI for updating batch states~~
 
-API for updating batch states
+~~API for updating batch states~~
 
-DB for updating batch states
+~~DB for updating batch states~~
 
 
 
@@ -35,5 +35,7 @@ API for listing batches/packages
 UI for checking packing for customer
 
 API for checking packing for customer
+
+
 
 UI Styling

@@ -3,7 +3,7 @@
 <input type="text" id="batch-name" [(ngModel)]="batchName">
 <br>
 <label for="file-uploader">上传文件: </label>
-<input type="file" accept=".xlsx, .txt" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)" maxlength="30">
+<input type="file" accept=".xlsx, .ods" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)" maxlength="30">
 <button (click)="reset()">清除</button>
 <a href="../../../../assets/new.xlsx"> 下载模板</a>
 <br>
