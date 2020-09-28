@@ -1,6 +1,6 @@
 <p *ngIf="isErrorMsg()"> {{this.info.content}}</p>
 <div *ngIf="isPackageInfo()">
     <p *ngFor="let state of getStates()">
-        {{state["Date"]}}:{{state["Description"]}}
+        {{state["Description"]}}:{{state["Time"]}}
     </p>
 </div>

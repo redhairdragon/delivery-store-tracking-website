@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
-// import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,6 @@ export class AdminAccessorService {
 
   constructor(
     private http: HttpClient,
-    // private router: Router,
     private cookieService: CookieService) {
   }
 

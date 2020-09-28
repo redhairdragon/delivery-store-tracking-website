@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cors = require('cors')
 
 var adminRouter = require('./routes/admin');
+var customerRouter = require('./routes/customer');
+
 var mysql = require('mysql');
 var mysqlConn = mysql.createConnection({
     host: 'localhost',
@@ -34,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 app.use('/admin', adminRouter);
+app.use('/customer/', customerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { DataAccessorService } from '../../service/data-accessor.service'
-import {Info, InfoType} from '../info'
+import { Info, InfoType } from '../info'
 
 @Component({
   selector: 'app-package-search-bar',
@@ -22,11 +22,12 @@ export class PackageSearchBarComponent implements OnInit {
   }
 
   getTrackingInfo(): void {
-    
-    let info = this.dataAccessor.lookUpPackage(this.inputPackageId);
-    if ("error" in info)
-      this.displayInfo = new Info(InfoType.ErrorResponse, info["error"]);
-    else
-      this.displayInfo = new Info(InfoType.PackageInfo, info["content"]);
+    this.dataAccessor.lookUpPackage(this.inputPackageId, (info) => {
+      console.log(info)
+      if ("error" in info)
+        this.displayInfo = new Info(InfoType.ErrorResponse, info["error"]);
+      else
+        this.displayInfo = new Info(InfoType.PackageInfo, info["content"]);
+    });
   }
 }

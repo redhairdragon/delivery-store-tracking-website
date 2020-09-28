@@ -213,7 +213,6 @@ function checkBatchNameExistance(batchName, dbConn, callback) {
     });
 }
 
-
 router.post('/updateBatchStates', async function(req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
@@ -291,7 +290,6 @@ router.delete('/deleteBatchState',function(req,res){
     const query = "delete from States where description = ? and batchName = ?;"
     dbConn.query(query, [req.query.description,req.query.batchName], function(error, results, fields) {
         if(error){
-            console.log("******")
             res.send("数据库出错联系申,提取批次信息").status(500).end()
             return
         }

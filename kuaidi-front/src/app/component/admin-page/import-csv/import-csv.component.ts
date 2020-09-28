@@ -58,6 +58,7 @@ export class ImportCsvComponent implements OnInit {
     reader.readAsBinaryString(file)
   }
   removeEmpty() {
+    console.log(this.xlsData)
     for (let i = 1; i < this.xlsData.length; ++i) {
       if (this.xlsData[i].length == 0)
         this.xlsData.splice(i, 1);
@@ -89,6 +90,13 @@ export class ImportCsvComponent implements OnInit {
     if (badRows.length != 0) {
       this.errorMessage = "请重新上传,原因: " + "第" + badRows.join() + "行单号没找到"
       return false
+    }
+
+    for (let i = 1; i < this.xlsData.length; ++i) {
+      if (this.xlsData[i][1].length!="cl86008927us".length){
+        this.errorMessage = "请重新上传,原因: " + "第" + i + "行单号长度不对"
+        return false  
+      }
     }
 
     var packageIdSet = new Set()
