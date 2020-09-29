@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>菜单</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="/">包裹查询</a>
+      <a mat-list-item>快递价格</a>
+      <a mat-list-item>联系方式</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar id="title" color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>乘龙快递 America Cheng Long INC.</span>
+      <span class="spacer"></span>
+      <button mat-icon-button aria-label="登入" (click)="login()">
+        <!-- <a href="/admin-page/login"> -->
+          <mat-icon>face</mat-icon>
+        <!-- </a> -->
+      </button>
+    </mat-toolbar>
+    <router-outlet>
+    </router-outlet>
+    <footer>
+      <p>developed by <a href="mailto: shen_teng@engineering.ucla.edu">Shen Teng</a>
+      </p>
+    </footer>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

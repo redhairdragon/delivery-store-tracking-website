@@ -26,7 +26,7 @@
 
             <mat-checkbox [checked]="changed[x]" (change)="toggleModification(x,$event)">修改</mat-checkbox>
 
-            <button mat-button color="warn"  [disabled] = "!deletable[x]" (click)="deleteStateEntry(state,x)">
+            <button mat-raised-button color="warn"  [disabled] = "!deletable[x]" (click)="deleteStateEntry(state,x)">
                 删除
             </button>
 

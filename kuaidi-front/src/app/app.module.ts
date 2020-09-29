@@ -29,6 +29,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCheckboxModule } from '@angular/material/checkbox';
 import {MatButtonModule } from '@angular/material/button';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { NavPageComponent } from './nav-page/nav-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,7 @@ import {MatButtonModule } from '@angular/material/button';
     LoginComponent,
     PageNotFoundComponent,
     AdminActionListComponent,
+    NavPageComponent,
   ],
   imports: [
     FormsModule,
@@ -60,7 +65,10 @@ import {MatButtonModule } from '@angular/material/button';
     MatDividerModule,
     MatSidenavModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   providers: [
     CookieService,

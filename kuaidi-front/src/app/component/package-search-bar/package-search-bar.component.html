@@ -1,3 +1,10 @@
-<input type="text" placeholder="查询快递单号.." [(ngModel)]="inputPackageId">
-<button (click)="getTrackingInfo()">查询</button>
+<mat-form-field>
+    <mat-label>输入包裹单号</mat-label>
+    <input matInput type="search" [(ngModel)]="inputPackageId" placeholder="CL12345678US">
+    <button mat-icon-button (click)="getTrackingInfo()" matSuffix  type="submit">
+        <mat-icon>search</mat-icon>
+    </button>
+</mat-form-field>
+<img src="../../../assets/package.png" alt="">
+
 <app-package-info *ngIf="this.displayInfo" [info]="this.displayInfo"></app-package-info>
