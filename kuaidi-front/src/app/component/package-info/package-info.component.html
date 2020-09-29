@@ -1,6 +1,8 @@
-<p *ngIf="isErrorMsg()"> {{this.info.content}}</p>
-<div *ngIf="isPackageInfo()">
-    <p *ngFor="let state of getStates()">
-        {{state["Description"]}}:{{state["Time"]}}
-    </p>
+<div *ngIf="isPackageInfo()" id="main">
+    <mat-selection-list [multiple]="false" >
+        <mat-list-option *ngFor="let state of getStates()">
+            <mat-icon mat-list-icon>{{getIcon(state["Description"])}}</mat-icon>
+                {{state["Description"]}} {{state["Time"]}}
+        </mat-list-option>
+    </mat-selection-list>
 </div>

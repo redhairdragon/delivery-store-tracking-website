@@ -14,11 +14,10 @@ mat-form-field {
     text-align: center;
 
     margin: 5% 10% ;
-    /* float: center; */
-
+    margin-bottom: 0;
     font-size: 25px;
     line-height: 28px; 
-    /* font-weight: 400; */
+
 }
 
 input {

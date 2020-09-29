@@ -7,6 +7,7 @@ import {Info, InfoType} from '../info'
   styleUrls: ['./package-info.component.css']
 })
 export class PackageInfoComponent implements OnInit {
+  
 
   constructor() { }
   @Input()
@@ -24,5 +25,15 @@ export class PackageInfoComponent implements OnInit {
   getStates():Array<Object>{
     return this.info.content;
   }
-
+  getIcon(state:string):string{
+    const iconMapping = {
+      "1.送往仓库":"store",
+      "2.到达机场":"local_airport",
+      "3.飞机起飞":"flight_takeoff",
+      "4.抵达海关":"flight_land",
+      "5.海关清关":"anchor"
+    }
+    // console.log(iconMapping.get(state))
+    return iconMapping[state]
+  }
 }

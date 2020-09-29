@@ -29,18 +29,18 @@ export class DataAccessorService {
           callback({ "error": "单号不存在，重新检查/可能管理员还未上传" })
       }, next: (resp) => {
         let states = []
-        for(let state in resp.body){
-          if(resp.body[state])
+        for (let state in resp.body) {
+          if (resp.body[state])
             states.push({
-              "Description":state,
+              "Description": state,
               "Time":
-              new Date(resp.body[state]).toLocaleDateString()
-              + " "
-              + new Date(resp.body[state]).toLocaleTimeString()
+                new Date(resp.body[state]).toLocaleDateString()
+                + " "
+                + new Date(resp.body[state]).toLocaleTimeString()
             })
         }
-        states.sort((a,b) =>{ return new Date(a.time).getTime() - new Date(b.time).getTime()})
-        callback({"content":states})
+        states.sort((a, b) => { return new Date(a.time).getTime() - new Date(b.time).getTime() })
+        callback({ "content": states })
       }
     })
   }
@@ -64,5 +64,30 @@ export class DataAccessorService {
     let params = new HttpParams().set("packageId", pkgId);
     return this.http.get<any>(environment.apiUrl + '/customer/packageInfo',
       { headers: header, observe: 'response', "params": params });
+  }
+
+  async setLocalPackageSearchHistory(packageId: string) {
+    let history: string = localStorage.getItem("packageHistory")
+    if (history) {
+      let historyArray: Array<string> = JSON.parse(history)
+      if (historyArray.includes(packageId))
+        return
+      historyArray.push(packageId)
+      if (historyArray.length > 4)
+        historyArray = historyArray.slice(historyArray.length - 4, historyArray.length)
+      localStorage.setItem("packageHistory", JSON.stringify(historyArray))
+    } else {
+      localStorage.setItem("packageHistory", JSON.stringify([packageId]))
+    }
+  }
+
+  getLocalPackageSearchHistory(): Array<string> {
+    let history: string = localStorage.getItem("packageHistory")
+    if (history)
+      return JSON.parse(history)
+    return []
+  }
+  clearLocalPackageSearchHistory(){
+    localStorage.removeItem("packageHistory")
   }
 }

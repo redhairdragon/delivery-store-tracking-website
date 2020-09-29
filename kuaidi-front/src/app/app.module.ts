@@ -34,6 +34,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NavPageComponent } from './nav-page/nav-page.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +71,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     LayoutModule,
     MatToolbarModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSnackBarModule,
+    MatAutocompleteModule
   ],
   providers: [
     CookieService,

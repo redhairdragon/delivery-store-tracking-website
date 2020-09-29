@@ -1,17 +1,33 @@
-<mat-progress-bar mode="buffer"></mat-progress-bar>
+<mat-progress-bar mode="buffer" *ngIf="loading"></mat-progress-bar>
 <div id="search-box">
+  
+    <mat-form-field appearance="standard">
 
-    <mat-form-field appearance="standard" >
         
         <mat-label>输入包裹单号</mat-label>
         <input maxlength="12" 
-        matInput type="search" 
-        [(ngModel)]="inputPackageId" 
-        placeholder="CL12345678US"
-        (keydown.enter)="getTrackingInfo()"
-        autocomplete="off"
+            matInput type="search" 
+            [(ngModel)]="inputPackageId" 
+            placeholder="CL12345678US"
+            (keydown.enter)="getTrackingInfo()" 
+            [matAutocomplete]="auto"
+            #searchInput
         >
-        <button mat-icon-button (click)="getTrackingInfo()" matSuffix >
+        <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option 
+                (click)="getTrackingInfo()" 
+                *ngFor="let option of this.dataAccessor.getLocalPackageSearchHistory();" 
+                [value]="option">
+                {{option}}
+            </mat-option>
+            <mat-option 
+                *ngIf="this.dataAccessor.getLocalPackageSearchHistory().length >0"
+                (click)="this.dataAccessor.clearLocalPackageSearchHistory();$event.preventDefault()">
+                清除历史
+            </mat-option>
+        </mat-autocomplete>
+        
+        <button mat-icon-button (click)="getTrackingInfo();" matSuffix>
             <mat-icon>search</mat-icon>
         </button>
 
