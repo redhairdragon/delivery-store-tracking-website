@@ -27,13 +27,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatCheckboxModule } from '@angular/material/checkbox';
-import {MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NavPageComponent } from './nav-page/nav-page.component';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,7 +68,8 @@ import { NavPageComponent } from './nav-page/nav-page.component';
     MatButtonModule,
     LayoutModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressBarModule
   ],
   providers: [
     CookieService,
@@ -78,5 +79,5 @@ import { NavPageComponent } from './nav-page/nav-page.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {  
+export class AppModule {
 }

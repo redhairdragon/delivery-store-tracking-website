@@ -1,10 +1,21 @@
-<mat-form-field>
-    <mat-label>输入包裹单号</mat-label>
-    <input matInput type="search" [(ngModel)]="inputPackageId" placeholder="CL12345678US">
-    <button mat-icon-button (click)="getTrackingInfo()" matSuffix  type="submit">
-        <mat-icon>search</mat-icon>
-    </button>
-</mat-form-field>
-<img src="../../../assets/package.png" alt="">
+<mat-progress-bar mode="buffer"></mat-progress-bar>
+<div id="search-box">
 
-<app-package-info *ngIf="this.displayInfo" [info]="this.displayInfo"></app-package-info>
+    <mat-form-field appearance="standard" >
+        
+        <mat-label>输入包裹单号</mat-label>
+        <input maxlength="12" 
+        matInput type="search" 
+        [(ngModel)]="inputPackageId" 
+        placeholder="CL12345678US"
+        (keydown.enter)="getTrackingInfo()"
+        autocomplete="off"
+        >
+        <button mat-icon-button (click)="getTrackingInfo()" matSuffix >
+            <mat-icon>search</mat-icon>
+        </button>
+
+    </mat-form-field>
+
+    <app-package-info *ngIf="this.displayInfo" [info]="this.displayInfo"></app-package-info>
+</div>

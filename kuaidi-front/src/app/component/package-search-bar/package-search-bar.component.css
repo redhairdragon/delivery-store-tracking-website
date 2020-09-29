@@ -1,0 +1,32 @@
+#search-box {
+    display: flex;
+    border: 1px solid grey;
+    margin: 4%;
+    border-radius: 10px;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-content:center;
+    background-image: url("../../../assets/package.png");
+    background-size: cover; 
+}
+
+mat-form-field {
+    text-align: center;
+
+    margin: 5% 10% ;
+    /* float: center; */
+
+    font-size: 25px;
+    line-height: 28px; 
+    /* font-weight: 400; */
+}
+
+input {
+    text-align: center;
+    /* margin: 0; */
+}
+mat-progress-bar{
+    position: relative;
+    top:6px;
+}
+
