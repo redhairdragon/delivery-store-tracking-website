@@ -22,6 +22,9 @@ export class NavPageComponent {
     private breakpointObserver: BreakpointObserver) {}
   login(){
     this.router.navigate(['/admin-page/login']);
-
   }
+  showCustomerMenu(): boolean{
+    return this.router.url.includes("customer-page")
+  }
+
 }

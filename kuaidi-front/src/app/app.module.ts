@@ -16,7 +16,6 @@ import { LoginComponent } from './component/admin-page/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
 import { CookieService } from 'ngx-cookie-service';
-import { AdminActionListComponent } from './component/admin-page/admin-action-list/admin-action-list.component';
 import { DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatListModule } from '@angular/material/list';
@@ -34,8 +33,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NavPageComponent } from './nav-page/nav-page.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ContactPageComponent } from './component/customer-page/contact-page/contact-page.component';
+import { PricePageComponent } from './component/customer-page/price-page/price-page.component';
+import { MatTabsModule } from '@angular/material/tabs';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,8 +51,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ListInfosComponent,
     LoginComponent,
     PageNotFoundComponent,
-    AdminActionListComponent,
     NavPageComponent,
+    ContactPageComponent,
+    PricePageComponent,
   ],
   imports: [
     FormsModule,
@@ -73,7 +77,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatIconModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatAutocompleteModule
+    MatAutocompleteModule, MatTabsModule
   ],
   providers: [
     CookieService,

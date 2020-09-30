@@ -8,6 +8,8 @@ import { ImportCsvComponent } from './component/admin-page/import-csv/import-csv
 import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
 import { LoginComponent } from './component/admin-page/login/login.component';
 import { LoginGuard } from './guard/login.guard'
+import { ContactPageComponent } from './component/customer-page/contact-page/contact-page.component'
+import { PricePageComponent } from './component/customer-page/price-page/price-page.component'
 
 const routes: Routes = [
   {
@@ -34,7 +36,10 @@ const routes: Routes = [
       },
     ],
   },
-  { path: "customer-page", component: CustomerPageComponent },
+  { path: "customer-page", component: CustomerPageComponent},
+  { path: "customer-page/contact", component: ContactPageComponent},
+  { path: "customer-page/price", component: PricePageComponent},
+  { path: '', redirectTo: 'customer-page', pathMatch: 'full' },
   { path: '', redirectTo: 'customer-page', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
 ];

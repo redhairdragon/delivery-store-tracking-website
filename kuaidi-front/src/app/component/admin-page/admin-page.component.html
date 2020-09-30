@@ -1,3 +1,5 @@
-<app-admin-action-list *ngIf="isLoggedIn()">
-</app-admin-action-list>
+<mat-tab-group mat-align-tabs="start" *ngIf="isLoggedIn()">
+    <mat-tab label="导入表格"></mat-tab>
+    <mat-tab label="批次处理"></mat-tab>
+</mat-tab-group>
 <router-outlet></router-outlet>

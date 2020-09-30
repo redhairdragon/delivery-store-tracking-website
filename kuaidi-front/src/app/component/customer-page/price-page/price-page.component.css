@@ -1,0 +1,12 @@
+div {
+    justify-content: center;
+    display: flex;
+    margin: 15%;
+}
+
+button {
+    width: 200px;
+    height: 200px;
+    line-height: 20px;
+     font-size: 20px;
+}

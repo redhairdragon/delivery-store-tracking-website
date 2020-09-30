@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminActionListComponent } from './admin-action-list.component';
+import { PricePageComponent } from './price-page.component';
 
-describe('AdminActionListComponent', () => {
-  let component: AdminActionListComponent;
-  let fixture: ComponentFixture<AdminActionListComponent>;
+describe('PricePageComponent', () => {
+  let component: PricePageComponent;
+  let fixture: ComponentFixture<PricePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminActionListComponent ]
+      declarations: [ PricePageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminActionListComponent);
+    fixture = TestBed.createComponent(PricePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
