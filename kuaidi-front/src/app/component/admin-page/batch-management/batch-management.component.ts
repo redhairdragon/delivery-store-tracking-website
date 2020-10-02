@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminAccessorService } from 'src/app/service/admin-accessor.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-batch-management',
@@ -27,6 +28,7 @@ export class BatchManagementComponent implements OnInit {
   ];
 
   constructor(
+    private _snackBar: MatSnackBar,
     private adminService: AdminAccessorService,
     private router: Router,
   ) {
@@ -84,7 +86,12 @@ export class BatchManagementComponent implements OnInit {
     //fetch from server
     let batchName = this.batchSelectionMenu.selectedOptions.selected[0]?.value;
     this.adminService.getBatchStateRequest(batchName).subscribe({
-      error: err => this.stateMessage = err,
+      error: err => {
+        this.stateMessage = err;
+        this._snackBar.open(this.stateMessage, "Dismiss", {
+          duration: 2000,
+        })
+      },
       next: resp => {
         this.shippingStates.forEach((state, index) => {
           if (resp[state]) {
@@ -92,12 +99,18 @@ export class BatchManagementComponent implements OnInit {
             this.deletable[index] = true;
             this.date[index].setValue(storedDate)
             this.time[index] = storedDate.toLocaleTimeString("en-GB").substr(0, 5);
-          }})}})
+          }
+        })
+      }
+    })
   }
 
   updateBatchStates() {
     if (this.changed.reduce((a, b) => { return !b ? a : ++a }, 0) == 0) {
       this.stateMessage = "什么都没有改动:)"
+      this._snackBar.open(this.stateMessage, "Dismiss", {
+        duration: 2000,
+      })
       return
     }
 
@@ -115,9 +128,15 @@ export class BatchManagementComponent implements OnInit {
     this.adminService.updateBatchStatesRequest(batchName, states, timeArray).subscribe({
       next: (resp) => {
         this.stateMessage = "更新成功"
+        this._snackBar.open(this.stateMessage, "Dismiss", {
+          duration: 2000,
+        })
         this.resetForm()
       }, error: (resp) => {
         this.stateMessage = resp.body
+        this._snackBar.open(this.stateMessage, "Dismiss", {
+          duration: 2000,
+        })
       }
     })
   }

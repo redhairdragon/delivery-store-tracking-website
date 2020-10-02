@@ -1,40 +1,40 @@
-<br>
-<button (click)="fetchBatchList()">刷新</button>
-<div class="basic-container" style="width:20%">
-    <mat-selection-list [multiple]="false" #batches>
-        <mat-list-option *ngFor="let batch of batchNames" [value]="batch" (click)="resetForm()">
-            {{batch}}
-        </mat-list-option>
-    </mat-selection-list>
+<button (click)="fetchBatchList()" mat-raised-button color="accent">
+    刷新</button>
+<button (click)="updateBatchStates()" mat-raised-button color="primary">
+    上传</button>
+
+<div id="batch-form">
+    <div style="width:20%; height:80%">
+        <mat-selection-list [multiple]="false" #batches>
+            <mat-list-option *ngFor="let batch of batchNames" [value]="batch" (click)="resetForm()">
+                {{batch}}
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
+    <div style="width:60%" *ngIf="batches.selectedOptions.selected[0]?.value">
+        <mat-list #states>
+            <mat-list-item id = "list-entry" *ngFor="let state of shippingStates;let x= index;">
+                <div id="state-description">{{state}}</div>
+                <mat-form-field appearance="fill">
+
+                    <input matInput [matDatepicker]="picker" [formControl]="date[x]">
+
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput [disabled]="!this.changed[x]" type="time" [(ngModel)]="time[x]">
+                </mat-form-field>
+
+                <mat-checkbox [checked]="changed[x]" (change)="toggleModification(x,$event)">修改</mat-checkbox>
+
+                <button mat-raised-button color="warn" [disabled]="!deletable[x]" (click)="deleteStateEntry(state,x)">
+                    删除
+                </button>
+
+            </mat-list-item>
+        </mat-list>
+    </div>
 </div>
-<br>
-<div class="basic-container" style="width:60%" *ngIf="batches.selectedOptions.selected[0]?.value">
-    <mat-list #states>
-        <mat-list-item *ngFor="let state of shippingStates;let x= index;">
-            <p>{{state}}</p>
-            <mat-form-field color="accent">
-                <input matInput [matDatepicker]="picker" [formControl]="date[x]">
-
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-
-            </mat-form-field>
-
-            <mat-form-field>
-                <input matInput [disabled]="!this.changed[x]" type="time" [(ngModel)]="time[x]">
-            </mat-form-field>
-
-            <mat-checkbox [checked]="changed[x]" (change)="toggleModification(x,$event)">修改</mat-checkbox>
-
-            <button mat-raised-button color="warn"  [disabled] = "!deletable[x]" (click)="deleteStateEntry(state,x)">
-                删除
-            </button>
-
-        </mat-list-item>
-    </mat-list>
-
-    <button (click)="updateBatchStates()">
-        上传
-    </button>
-</div>
-<p>{{stateMessage}}</p>

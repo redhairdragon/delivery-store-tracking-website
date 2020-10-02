@@ -299,4 +299,7 @@ router.delete('/deleteBatchState',function(req,res){
     });
 })
 
+router.post('/uploadPrice', async function(req, res, next) {
+    
+})
 module.exports = router;

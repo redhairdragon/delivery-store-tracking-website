@@ -1,0 +1,6 @@
+<input hidden #fileInput accept=".pdf" type="file" id="file" (change)="upload($event)">
+<div>
+    <button mat-fab color="primary" (click)="fileInput.click()" *ngIf="!uploading">
+        $ 上传价目表 $
+    </button>
+</div>

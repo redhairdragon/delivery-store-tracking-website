@@ -3,20 +3,22 @@
 <input type="text" id="batch-name" [(ngModel)]="batchName">
 <br>
 <label for="file-uploader">上传文件: </label>
-<input type="file" accept=".xlsx, .ods" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)" maxlength="30">
-<button (click)="reset()">清除</button>
-<a href="../../../../assets/new.xlsx"> 下载模板</a>
-<br>
-<p>{{errorMessage}}</p>
-<table style="width:100%" *ngIf="showTable&&xlsData">
+<input  type="file" accept=".xlsx, .ods" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)">
+
+<button mat-raised-button color="primary" (click)="upload()">上传</button>
+<button mat-raised-button color="warn" (click)="reset()">清除</button>
+<a href="../../../../assets/new.xlsx">
+<button mat-raised-button color="accent">
+下载模板
+</button></a>
+
+
+<table *ngIf="showTable&&xlsData">
     <tr>
         <th *ngFor="let cat of this.xlsData[0];">{{cat}}</th>
     </tr>
     <tr *ngFor="let package of this.xlsData.slice(1);">
-        <th *ngFor="let prop of package">{{prop!==undefined?prop:""}}</th>
-    </tr>
-
-
+        <td *ngFor="let prop of package">{{prop!==undefined?prop:""}}</td>
+    </tr>   
 </table>
 <br>
-<button (click)="upload()">上传</button>

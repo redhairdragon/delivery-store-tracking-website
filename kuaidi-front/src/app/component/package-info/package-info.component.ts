@@ -33,7 +33,6 @@ export class PackageInfoComponent implements OnInit {
       "4.抵达海关":"flight_land",
       "5.海关清关":"anchor"
     }
-    // console.log(iconMapping.get(state))
     return iconMapping[state]
   }
 }

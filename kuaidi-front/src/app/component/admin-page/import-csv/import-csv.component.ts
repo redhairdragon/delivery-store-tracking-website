@@ -3,6 +3,7 @@ import { AdminAccessorService } from "../../../service/admin-accessor.service"
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common'
 import { Router } from '@angular/router';
+import { ToastService } from "../../../service/toast.service"
 
 @Component({
   selector: 'app-import-csv',
@@ -20,7 +21,8 @@ export class ImportCsvComponent implements OnInit {
   constructor(
     private adminService: AdminAccessorService,
     private router: Router,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private toaster: ToastService,
   ) {
     this.batchName = this.createBatchName()
     this.showTable = false;
@@ -30,7 +32,11 @@ export class ImportCsvComponent implements OnInit {
   }
 
   fileSelected(event: { target: { files: string | any[]; }; }) {
-    if (event.target.files.length !== 1) throw new Error('Cannot use multiple files');
+    if (event.target.files.length !== 1) {
+      this.errorMessage = 'Cannot use multiple files';
+      this.toaster.toast(this.errorMessage)
+      return
+    }
     var file = event.target.files[0]
 
     this.filename = ""
@@ -53,7 +59,9 @@ export class ImportCsvComponent implements OnInit {
       this.removeEmpty()
       this.stringifyAll()
       this.completeSequence()
-      this.validateData();
+      if (!this.validateData()) {
+        this.toaster.toast(this.errorMessage)
+      }
     };
     reader.readAsBinaryString(file)
   }
@@ -93,9 +101,9 @@ export class ImportCsvComponent implements OnInit {
     }
 
     for (let i = 1; i < this.xlsData.length; ++i) {
-      if (this.xlsData[i][1].length!="cl86008927us".length){
+      if (this.xlsData[i][1].length != "cl86008927us".length) {
         this.errorMessage = "请重新上传,原因: " + "第" + i + "行单号长度不对"
-        return false  
+        return false
       }
     }
 
@@ -120,25 +128,30 @@ export class ImportCsvComponent implements OnInit {
   upload() {
     if (this.showTable == false) {
       this.errorMessage = "选择一个文件先"
-      return
+      this.toaster.toast(this.errorMessage)
+      return false
     }
     if (this.batchName.length > 40) {
       this.errorMessage = "批次名字太长"
+      this.toaster.toast(this.errorMessage)
       return
     }
     if (this.validateData() === false) {
       alert(this.errorMessage)
-      return
+      return false
     }
     this.adminService.checkBatchNameExistRequest(this.batchName).subscribe({
-      next:(response)=>{
-        if(response === true){
-          if(!confirm("这个批次已经在服务器上了，确定要覆盖吗?"))
-            return
+      next: (response) => {
+        if (response === true) {
+          if (!confirm("这个批次已经在服务器上了，确定要覆盖吗?")) {
+            this.errorMessage = "";
+            return false
+          }
         }
         this.adminService.uploadBatchRequest(this.xlsData, this.batchName).subscribe({
-          next: (response) => { 
-            this.router.navigate(["/admin-page/batch"])
+          next: (response) => {
+            this.errorMessage = "上传批次成功";
+            this.toaster.toast(this.errorMessage)
           },
           error: (response) => {
             if (response.status === 422) {
@@ -146,6 +159,7 @@ export class ImportCsvComponent implements OnInit {
                 this.errorMessage = "批次名字太长"
               else
                 this.errorMessage = response.error
+              this.toaster.toast(this.errorMessage)
             }
             if (response.status === 401) {
               this.adminService.clearCookie();
@@ -153,14 +167,16 @@ export class ImportCsvComponent implements OnInit {
             }
             if (response.status === 400) {
               this.errorMessage = "服务器出错了,联系申"
+              this.toaster.toast(this.errorMessage)
               this.router.navigate(['/customer-page/'])
             }
           }
         });
       },
-      error:(response)=>{
+      error: (response) => {
         if (response.status === 400) {
           this.errorMessage = "服务器出错了,联系申"
+          this.toaster.toast(this.errorMessage)
           this.router.navigate(['/customer-page/'])
         }
       }

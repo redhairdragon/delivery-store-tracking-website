@@ -66,6 +66,11 @@ export class DataAccessorService {
       { headers: header, observe: 'response', "params": params });
   }
 
+  priceFileRequest() {
+    return this.http.get<any>(environment.apiUrl + '/customer/getPrice',
+      { observe: 'response', responseType: 'blob' as 'json'});
+  }
+
   async setLocalPackageSearchHistory(packageId: string) {
     let history: string = localStorage.getItem("packageHistory")
     if (history) {
@@ -90,4 +95,6 @@ export class DataAccessorService {
   clearLocalPackageSearchHistory(){
     localStorage.removeItem("packageHistory")
   }
+
+ 
 }

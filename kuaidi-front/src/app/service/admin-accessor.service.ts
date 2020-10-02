@@ -74,6 +74,12 @@ export class AdminAccessorService {
     return this.http.delete<any>(environment.apiUrl + `/admin/deleteBatchState`,
       { headers: header, observe: 'response', withCredentials: true, "params": params })
   }
-
+  
+  uploadPriceRequest(fileBytes){
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+    return this.http.post<any>(environment.apiUrl + '/admin/uploadPrice',
+      { "file": fileBytes },
+      { headers: header, observe: "response", withCredentials: true });
+  }
 }
 

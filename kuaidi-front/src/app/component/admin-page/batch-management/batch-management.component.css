@@ -1,3 +1,20 @@
 mat-form-field {
     margin-right: 12px;
 }
+button{
+    margin: 1%;
+}
+#batch-form{
+    display: flex;
+    /* justify-content: center; */
+    flex-wrap: wrap;
+}
+
+#state-description{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#list-entry{
+    height: 10%;
+}

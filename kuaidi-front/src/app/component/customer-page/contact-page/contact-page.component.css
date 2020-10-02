@@ -1,18 +1,19 @@
 div {
     display: flex;
     justify-content: center;
-    height: 90%;
+    height: auto;
 }
 
 div>mat-list {
     border-style: solid;
     border-width: 2px;
     border-radius: 20px;
-    padding: 5%;
-    margin: 10%;
+    padding: 3%;
+    margin: 2%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    height: auto;
 }
 
 .wechat-logo {
@@ -25,4 +26,20 @@ a {
 
 mat-list-item {
     padding: 0;
+}
+
+.wechat-twod {
+    margin: auto;
+    height: 500px;
+    width: 500px;
+    background: url('../../../../assets/wechat-2d') no-repeat center center / contain;
+}
+
+@media only screen and (max-width: 768px) {
+    .wechat-twod {
+        margin: auto;
+        height: 200px;
+        width: 200px;
+        background: url('../../../../assets/wechat-2d') no-repeat center center / contain;
+    }
 }

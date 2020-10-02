@@ -29,3 +29,8 @@ mat-sidenav{
 #title{
   box-shadow: 0px 3px 10px black;
 }
+#title-text{
+  text-decoration: none;
+  color: white;
+}
+

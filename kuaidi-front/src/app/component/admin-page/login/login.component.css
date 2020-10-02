@@ -1,0 +1,12 @@
+div{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    flex-grow: 1;
+    height: 40%;
+    align-items: center;
+
+}
+form>*{
+    /* margin:10%; */
+}

@@ -15,7 +15,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>乘龙快递 Cheng Long INC.</span>
+      <span><a href="" id="title-text">乘龙快递 Cheng Long INC.</a></span>
       <span class="spacer"></span>
       <button mat-icon-button aria-label="登入" (click)="login()">
           <mat-icon>face</mat-icon>
@@ -23,10 +23,10 @@
     </mat-toolbar>
     <router-outlet>
     </router-outlet>
-    <footer>
-      <p>developed by <a href="mailto: shen_teng@engineering.ucla.edu">Shen Teng</a>
-      </p>
-    </footer>
+<footer>
+    <p>developed by <a href="mailto: shen_teng@engineering.ucla.edu">Shen Teng</a>
+    </p>
+  </footer>
   </mat-sidenav-content>
-
+  
 </mat-sidenav-container>

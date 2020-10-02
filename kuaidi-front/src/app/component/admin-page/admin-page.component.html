@@ -1,5 +1,15 @@
-<mat-tab-group mat-align-tabs="start" *ngIf="isLoggedIn()">
-    <mat-tab label="导入表格"></mat-tab>
-    <mat-tab label="批次处理"></mat-tab>
+<mat-tab-group mat-align-tabs="start" *ngIf="isLoggedIn()" 
+    (selectedTabChange)="tabChangeHandler($event)">
+    <mat-tab label="导入表格">
+        <app-import-csv></app-import-csv>
+    </mat-tab>
+    <mat-tab label="批次处理">
+        <app-batch-management #batchManagementComponent></app-batch-management>
+    </mat-tab>
+    <mat-tab label="上传价格">
+        <app-upload-price></app-upload-price>
+        <!-- <app-batch-management #batchManagementComponent></app-batch-management> -->
+    </mat-tab>
 </mat-tab-group>
-<router-outlet></router-outlet>
+
+<router-outlet *ngIf="!isLoggedIn()"></router-outlet>

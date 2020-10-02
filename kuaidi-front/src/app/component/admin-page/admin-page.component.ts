@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminAccessorService } from "../../service/admin-accessor.service"
 import { Router, ActivatedRoute} from '@angular/router';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-admin-page',
@@ -8,6 +9,7 @@ import { Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent implements OnInit {
+  @ViewChild('batchManagementComponent') batchComp;
 
   constructor(
     private adminService: AdminAccessorService,
@@ -17,15 +19,15 @@ export class AdminPageComponent implements OnInit {
     }
 
   ngOnInit( ): void {
-    if(this.isLoggedIn())
-      this.router.navigate(['./list'],{relativeTo: this.activatedRoute});
-    else
+    if(!this.isLoggedIn())
       this.router.navigate(['./login'],{relativeTo: this.activatedRoute});
   }
   isLoggedIn(): boolean{
     return this.adminService.hasCookie()
   }
-
-
+  tabChangeHandler(event){
+    if(event.index===1)
+      this.batchComp.fetchBatchList()
+  }
 
 }

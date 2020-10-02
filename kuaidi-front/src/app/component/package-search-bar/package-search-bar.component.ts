@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { DataAccessorService } from '../../service/data-accessor.service'
 import { Info, InfoType } from '../info'
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from "../../service/toast.service"
 import { ViewChild } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
@@ -18,7 +18,7 @@ export class PackageSearchBarComponent implements OnInit {
 
   constructor(
     public dataAccessor: DataAccessorService,
-    private _snackBar: MatSnackBar
+    private toaster: ToastService,
   ) {
   }
 
@@ -33,13 +33,10 @@ export class PackageSearchBarComponent implements OnInit {
     }, 200)
 
     this.dataAccessor.lookUpPackage(this.inputPackageId, (info) => {
-      console.log(info)
+      // console.log(info)
       if ("error" in info) {
         let displayInfo = new Info(InfoType.ErrorResponse, info["error"]);
-        this._snackBar.open(info["error"], "了解！", {
-          duration: 2000,
-          verticalPosition: "top"
-        });
+        this.toaster.toast(info["error"])
       }
       else {
         this.dataAccessor.setLocalPackageSearchHistory(this.inputPackageId)

@@ -31,4 +31,9 @@ router.get('/packageInfo', async function (req, res, next) {
         });
     })
 })
+
+router.get('/getPrice', async function (req, res, next) {
+    const file = `./price.pdf`;
+    res.download(file);
+})
 module.exports = router;

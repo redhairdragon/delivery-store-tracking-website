@@ -1,6 +1,13 @@
-<form>
-    <label for="pwd">输入你的密码:</label>
-    <input type="password" id="pwd" name="password" minlength="8" [(ngModel)]="this.password" minlength="6">
-    <button (click)="loginWithPassword()">提交密码</button>
-</form>
-<p>{{loginMessage}}</p>
+<div>
+    <mat-form-field appearance="outline">
+        <mat-label>输入你的密码:</mat-label>
+        <input matInput 
+        type="password" 
+        id="pwd" name="password" 
+        minlength="8" 
+        [(ngModel)]="this.password" 
+        (keyup.enter)="loginWithPassword()"
+        >        
+    </mat-form-field>
+    <button  mat-stroked-button (click)="loginWithPassword()">提交密码</button>
+</div>

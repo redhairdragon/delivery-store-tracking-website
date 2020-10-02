@@ -11,7 +11,6 @@ import { AdminPageComponent } from './component/admin-page/admin-page.component'
 import { CustomerPageComponent } from './component/customer-page/customer-page.component';
 import { ImportCsvComponent } from './component/admin-page/import-csv/import-csv.component';
 import { BatchManagementComponent } from './component/admin-page/batch-management/batch-management.component';
-import { ListInfosComponent } from './component/admin-page/list-infos/list-infos.component';
 import { LoginComponent } from './component/admin-page/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
@@ -38,6 +37,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ContactPageComponent } from './component/customer-page/contact-page/contact-page.component';
 import { PricePageComponent } from './component/customer-page/price-page/price-page.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatTableModule} from '@angular/material/table';
+import {UploadPriceComponent} from './component/admin-page/upload-price/upload-price.component';
 
 @NgModule({
   declarations: [
@@ -48,12 +49,12 @@ import { MatTabsModule } from '@angular/material/tabs';
     CustomerPageComponent,
     ImportCsvComponent,
     BatchManagementComponent,
-    ListInfosComponent,
     LoginComponent,
     PageNotFoundComponent,
     NavPageComponent,
     ContactPageComponent,
     PricePageComponent,
+    UploadPriceComponent,
   ],
   imports: [
     FormsModule,
@@ -77,7 +78,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatIconModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatAutocompleteModule, MatTabsModule
+    MatAutocompleteModule, MatTabsModule,
+    MatTableModule,
   ],
   providers: [
     CookieService,
