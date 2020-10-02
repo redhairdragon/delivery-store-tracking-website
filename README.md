@@ -26,16 +26,20 @@ Work to do:
 
 
 
-UI for listing batches/packages
+~~UI for listing batches/packages~~
 
-API for listing batches/packages
-
-
-
-UI for checking packing for customer
-
-API for checking packing for customer
+~~API for listing batches/packages~~
 
 
 
-UI Styling
+~~UI for checking packing for customer~~
+
+~~API for checking packing for customer~~
+
+
+
+~~UI Styling~~
+
+
+
+add Pricing page
