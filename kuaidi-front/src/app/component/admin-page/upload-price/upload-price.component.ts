@@ -20,11 +20,16 @@ export class UploadPriceComponent implements OnInit {
 
   upload(event){
     let file = event.target.files[0]
-    if (file.size > 2000000){
+    if (file.size > 20000000){
       this.toaster.toast("文件太大了啦")
       return
     }
     console.log(event.target.files[0])
-    this.toaster.toast("上传完成")
+    this.adminService.uploadPriceRequest(file,obv=>{
+      obv.subscribe({
+        next: (resp) =>{this.toaster.toast("上传成功，可以去检查一下!")},
+        error: (resp) =>{this.toaster.toast("上传失败了，原因: "+resp+" 联系申")}
+      })
+    })
   }
 }

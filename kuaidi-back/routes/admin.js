@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
-const { pid } = require('process');
+var fs = require('fs');
 
 let password = "";
 var hashedpassword = "$2b$10$VrRXO3pOEhAlFhIlI2ckweErUEXD32tUc8lIFf4Y3sQrNsL6Gvexq";
@@ -54,7 +54,7 @@ async function getCookie() {
     return token;
 }
 
-router.post('/login', async function(req, res, next) {
+router.post('/login', async function (req, res, next) {
     if (authenticateCookie(req.cookies.kuaidi)) {
         res.status(200).end()
         return
@@ -76,7 +76,7 @@ router.post('/login', async function(req, res, next) {
     }
 });
 
-router.get('/batchNameCheck', async function(req, res, next) {
+router.get('/batchNameCheck', async function (req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
@@ -85,7 +85,7 @@ router.get('/batchNameCheck', async function(req, res, next) {
     let batchName = req.query.batchName;
     let dbConn = req.app.get("mysqlConn")
 
-    await dbConn.query(query, [batchName], function(error, results, fields) {
+    await dbConn.query(query, [batchName], function (error, results, fields) {
         if (error) {
             res.status(400).send("db update fail").end()
             return
@@ -100,7 +100,7 @@ router.get('/batchNameCheck', async function(req, res, next) {
 
 // 如果package存在，会被更新 TABLE:Batch Package
 // 如果batchName存在，会删除旧的batch里的所有东西 TABLE:Batch Package
-router.post('/uploadBatch', async function(req, res, next) {
+router.post('/uploadBatch', async function (req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
@@ -131,7 +131,7 @@ router.post('/uploadBatch', async function(req, res, next) {
 
     let dbConn = req.app.get("mysqlConn")
     deleteBatch(batchName, dbConn)
-        //add packages into Package table
+    //add packages into Package table
     for (let i = 1; i < data.length; ++i) {
         let fields = []
         let values = []
@@ -155,7 +155,7 @@ router.post('/uploadBatch', async function(req, res, next) {
                 " VALUES (" +
                 values.join() +
                 ")"
-            dbConn.query(query, function(error, results, fields) {
+            dbConn.query(query, function (error, results, fields) {
                 if (error) {
                     res.status(400).send("db update fail").end()
                     return
@@ -168,7 +168,7 @@ router.post('/uploadBatch', async function(req, res, next) {
     //add batchInfo to Batch table
     for (let i = 1; i < data.length; ++i) {
         const query = "replace into Batch (batchName, packageId, created) VALUES (?, ?, ?)";
-        dbConn.query(query, [batchName, data[i][1], batchCreateTime], function(error, results, fields) {
+        dbConn.query(query, [batchName, data[i][1], batchCreateTime], function (error, results, fields) {
             if (error) {
                 res.status(400).send("db update fail").end()
                 return
@@ -181,14 +181,14 @@ router.post('/uploadBatch', async function(req, res, next) {
 function deleteBatch(batchName, dbConn) {
     let deletePackageQuery =
         "delete from Package where packageId in ( select packageId from Batch where batchName = ?);"
-    dbConn.query(deletePackageQuery, [batchName], function(error, results, fields) {});
+    dbConn.query(deletePackageQuery, [batchName], function (error, results, fields) { });
 
     let deleteBatchQuery = "DELETE FROM Batch WHERE batchName=?";
-    dbConn.query(deleteBatchQuery, [batchName], function(error, results, fields) {})
+    dbConn.query(deleteBatchQuery, [batchName], function (error, results, fields) { })
 }
 
 
-router.get('/batchList', async function(req, res, next) {
+router.get('/batchList', async function (req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
@@ -196,7 +196,7 @@ router.get('/batchList', async function(req, res, next) {
     let dbConn = req.app.get("mysqlConn")
     let query = "select distinct batchName from Batch;";
     let batches = []
-    dbConn.query(query, [], function(error, results, fields) {
+    dbConn.query(query, [], function (error, results, fields) {
         results.forEach(result => {
             batches.push(result.batchName)
         })
@@ -208,12 +208,12 @@ function checkBatchNameExistance(batchName, dbConn, callback) {
     if (!batchName)
         return false
     let query = "select 1 from Batch where batchName = ? limit 1;";
-    dbConn.query(query, [batchName], function(error, results, fields) {
+    dbConn.query(query, [batchName], function (error, results, fields) {
         callback(error, results)
     });
 }
 
-router.post('/updateBatchStates', async function(req, res, next) {
+router.post('/updateBatchStates', async function (req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
@@ -251,7 +251,7 @@ router.post('/updateBatchStates', async function(req, res, next) {
                 params.push(payload.states[i])
                 params.push(payload.times[i])
             }
-            dbConn.query(query.substr(0, query.length - 1), params, function(error, results) {
+            dbConn.query(query.substr(0, query.length - 1), params, function (error, results) {
                 if (error) {
                     res.status(500).send("数据库坏了:2,联系申").end();
                     return;
@@ -265,31 +265,32 @@ router.post('/updateBatchStates', async function(req, res, next) {
 
 
 
-router.get('/batchStates', function(req, res, next) {
+router.get('/batchStates', function (req, res, next) {
     if (!authenticateCookie(req.cookies.kuaidi)) {
         res.status(401).end()
         return
     }
     let dbConn = req.app.get("mysqlConn")
     let query = "select description, updated from States where batchName = ?;";
-    dbConn.query(query, [req.query.batchName], function(error, results, fields) {
-        if(error){
+    dbConn.query(query, [req.query.batchName], function (error, results, fields) {
+        if (error) {
             res.send("数据库出错联系申,提取批次信息")
-            return}
+            return
+        }
         let states = {}
-        results.forEach(function(result){
-            states[result.description]=result.updated
+        results.forEach(function (result) {
+            states[result.description] = result.updated
         })
         res.status(200).send(states).end()
         return
     });
 })
 
-router.delete('/deleteBatchState',function(req,res){
+router.delete('/deleteBatchState', function (req, res) {
     let dbConn = req.app.get("mysqlConn")
     const query = "delete from States where description = ? and batchName = ?;"
-    dbConn.query(query, [req.query.description,req.query.batchName], function(error, results, fields) {
-        if(error){
+    dbConn.query(query, [req.query.description, req.query.batchName], function (error, results, fields) {
+        if (error) {
             res.send("数据库出错联系申,提取批次信息").status(500).end()
             return
         }
@@ -299,7 +300,11 @@ router.delete('/deleteBatchState',function(req,res){
     });
 })
 
-router.post('/uploadPrice', async function(req, res, next) {
-    
+router.post('/uploadPrice', async function (req, res, next) {
+    console.log()
+    fs.writeFile("price.pdf", req.body, (err) => {
+        if (err) res.status(401).send(e).end()
+        else res.status(200).end()
+    })
 })
 module.exports = router;

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -74,12 +75,17 @@ export class AdminAccessorService {
     return this.http.delete<any>(environment.apiUrl + `/admin/deleteBatchState`,
       { headers: header, observe: 'response', withCredentials: true, "params": params })
   }
-  
-  uploadPriceRequest(fileBytes){
-    const header = new HttpHeaders({ 'Content-Type': 'application/json' })
-    return this.http.post<any>(environment.apiUrl + '/admin/uploadPrice',
-      { "file": fileBytes },
-      { headers: header, observe: "response", withCredentials: true });
+
+  uploadPriceRequest(file, callback) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const content = reader.result;
+      const header = new HttpHeaders({ 'Content-Type': 'application/json' })
+      callback(this.http.post<any>(environment.apiUrl + '/admin/uploadPrice',
+        { "file": content },
+        { headers: header, observe: "response", withCredentials: true }))
+    }
+    reader.readAsBinaryString(file);
   }
 }
 
