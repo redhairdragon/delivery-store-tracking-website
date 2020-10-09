@@ -81,10 +81,11 @@ export class AdminAccessorService {
       const content = reader.result;
       const header = new HttpHeaders({ 'Content-Type': 'application/json' })
       callback(this.http.post<any>(environment.apiUrl + '/admin/uploadPrice',
-        { "file": content },
+        { file:content },
         { headers: header, observe: "response", withCredentials: true }))
     }
-    reader.readAsBinaryString(file);
+    reader.readAsDataURL(file);
+
   }
 }
 

@@ -301,8 +301,13 @@ router.delete('/deleteBatchState', function (req, res) {
 })
 
 router.post('/uploadPrice', async function (req, res, next) {
-    console.log()
-    fs.writeFile("price.pdf", req.body, (err) => {
+
+    if (!authenticateCookie(req.cookies.kuaidi)) {
+        res.status(401).end()
+        return
+    }    
+    let base64Pdf = req.body.file.split(';base64,').pop();
+    fs.writeFile("price.pdf",base64Pdf ,{encoding: 'base64'}, (err) => {
         if (err) res.status(401).send(e).end()
         else res.status(200).end()
     })
