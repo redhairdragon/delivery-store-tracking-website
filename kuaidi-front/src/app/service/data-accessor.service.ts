@@ -67,8 +67,10 @@ export class DataAccessorService {
   }
 
   priceFileRequest() {
+    const header = new HttpHeaders()
+    header.set('Accept', 'application/pdf');
     return this.http.get<any>(environment.apiUrl + '/customer/getPrice',
-      { observe: 'response', responseType: 'blob' as 'json'});
+      { headers: header, observe: 'response', responseType: 'blob' as 'json' });
   }
 
   async setLocalPackageSearchHistory(packageId: string) {

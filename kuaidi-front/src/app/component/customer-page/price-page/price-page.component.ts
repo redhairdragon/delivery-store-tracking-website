@@ -18,16 +18,17 @@ export class PricePageComponent implements OnInit {
   download() {
     this.dataAccessor.priceFileRequest().subscribe({
       next: (response: any) => {
-        console.log(response)
-        let dataType = response.type;
+        console.log(response.body)
         let binaryData = [];
-        binaryData.push(response.body);
-        let downloadLink = document.createElement('a');
-        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
-        downloadLink.setAttribute('download', "price.pdf");
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
 
+        response.body.arrayBuffer().then((data) => {
+          binaryData.push(data)
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: response.body.type }));
+          downloadLink.setAttribute('download', "price.pdf");
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+        })
         this.toaster.toast("在下载了")
       },
       error: (response) => {
