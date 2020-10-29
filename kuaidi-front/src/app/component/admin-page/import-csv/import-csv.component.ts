@@ -102,7 +102,7 @@ export class ImportCsvComponent implements OnInit {
   }
 
   trimTable(): void {
-    console.log(this.xlsData)
+    // console.log(this.xlsData)
 
     this.warningMessages = []
     const categories = ['seq', 'packageId', 'channel', 'customerName', 'customerPhone', 'brandName', 'brandNameChinese', 'quantity', 'unitPrice', 'dimension', 'unit', 'weight', 'insuredAmount', 'insuranceFee', 'customTax', 'receiverName', 'receiverPhone', 'receiverProvince', 'receiverCity', 'receiverAddress', 'receiverZIP', 'receiverId', 'transferCompany', 'transferPackageId', 'created', 'SKU', 'comment']
@@ -133,7 +133,7 @@ export class ImportCsvComponent implements OnInit {
         return
       this.xlsData.push(row)
     })
-    console.log(this.xlsData)
+    // console.log(this.xlsData)
   }
 
   stringifyAll() {

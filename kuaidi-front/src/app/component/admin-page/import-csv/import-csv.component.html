@@ -1,7 +1,7 @@
 <br>
 <ngb-alert dismissible="true" *ngIf="warningMessages.length!==0"
-    (close)="closeWarning()"> <strong>这些warning存在是为了减少human
-        error.可以选择性无视:</strong>
+    (close)="closeWarning()"> <strong>这些warnings存在是为了减少human
+        errors.可以选择性无视:</strong>
     <p *ngFor="let wmsg of warningMessages">{{wmsg}}</p>
 </ngb-alert>
 
