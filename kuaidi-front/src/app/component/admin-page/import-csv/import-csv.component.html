@@ -1,16 +1,23 @@
 <br>
+<ngb-alert dismissible="true" *ngIf="warningMessages.length!==0"
+    (close)="closeWarning()"> <strong>这些warning存在是为了减少human
+        error.可以选择性无视:</strong>
+    <p *ngFor="let wmsg of warningMessages">{{wmsg}}</p>
+</ngb-alert>
+
 <label for="batch-name">输入批次名: </label>
 <input type="text" id="batch-name" [(ngModel)]="batchName">
 <br>
 <label for="file-uploader">上传文件: </label>
-<input  type="file" accept=".xlsx, .ods" id="file-uploader" [(ngModel)]="filename" (change)="fileSelected($event)">
+<input type="file" accept=".xlsx, .ods" id="file-uploader"
+    [(ngModel)]="filename" (change)="fileSelected($event)">
 
 <button mat-raised-button color="primary" (click)="upload()">上传</button>
 <button mat-raised-button color="warn" (click)="reset()">清除</button>
 <a href="../../../../assets/new.xlsx">
-<button mat-raised-button color="accent">
-下载模板
-</button></a>
+    <button mat-raised-button color="accent">
+        下载模板
+    </button></a>
 
 
 <table *ngIf="showTable&&xlsData">
@@ -19,6 +26,6 @@
     </tr>
     <tr *ngFor="let package of this.xlsData.slice(1);">
         <td *ngFor="let prop of package">{{prop!==undefined?prop:""}}</td>
-    </tr>   
+    </tr>
 </table>
 <br>

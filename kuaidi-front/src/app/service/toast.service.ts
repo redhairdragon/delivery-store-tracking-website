@@ -5,11 +5,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class ToastService {
-    
+
   constructor(private _snackBar: MatSnackBar,) { }
-  toast(msg){
+  toast(msg: string) {
     this._snackBar.open(msg, "了解！", {
-      duration: 2000,
+      duration: 3500,
     })
   }
 }

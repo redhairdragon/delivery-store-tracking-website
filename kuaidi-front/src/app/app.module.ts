@@ -37,8 +37,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ContactPageComponent } from './component/customer-page/contact-page/contact-page.component';
 import { PricePageComponent } from './component/customer-page/price-page/price-page.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatTableModule} from '@angular/material/table';
-import {UploadPriceComponent} from './component/admin-page/upload-price/upload-price.component';
+import { MatTableModule } from '@angular/material/table';
+import { UploadPriceComponent } from './component/admin-page/upload-price/upload-price.component';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import {UploadPriceComponent} from './component/admin-page/upload-price/upload-p
     MatSnackBarModule,
     MatAutocompleteModule, MatTabsModule,
     MatTableModule,
+    NgbAlertModule,
   ],
   providers: [
     CookieService,

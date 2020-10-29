@@ -33,7 +33,6 @@ export class PackageSearchBarComponent implements OnInit {
     }, 200)
 
     this.dataAccessor.lookUpPackage(this.inputPackageId, (info) => {
-      // console.log(info)
       if ("error" in info) {
         let displayInfo = new Info(InfoType.ErrorResponse, info["error"]);
         this.toaster.toast(info["error"])

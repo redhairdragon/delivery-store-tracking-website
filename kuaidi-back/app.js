@@ -41,7 +41,7 @@ mysqlConn.connect();
 
 var app = express();
 app.set('mysqlConn', mysqlConn);
-// app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

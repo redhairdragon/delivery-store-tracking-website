@@ -17,6 +17,7 @@ export class ImportCsvComponent implements OnInit {
   public batchName: string;
   public showTable: boolean;
   public errorMessage: string;
+  public warningMessages: string[];
 
   constructor(
     private adminService: AdminAccessorService,
@@ -26,9 +27,14 @@ export class ImportCsvComponent implements OnInit {
   ) {
     this.batchName = this.createBatchName()
     this.showTable = false;
+    this.warningMessages = [];
   }
 
   ngOnInit(): void {
+  }
+
+  closeWarning() {
+    this.warningMessages = []
   }
 
   fileSelected(event: { target: { files: string | any[]; }; }) {
@@ -54,24 +60,19 @@ export class ImportCsvComponent implements OnInit {
       // console.log(this.xlsData)
       this.showTable = true;
       this.errorMessage = "";
-      console.log(this.xlsData)
       //validate the data
-      this.removeEmpty()
+      // console.log(this.xlsData)
       this.stringifyAll()
+      this.trimTable();
       this.completeSequence()
+
       if (!this.validateData()) {
         this.toaster.toast(this.errorMessage)
       }
     };
     reader.readAsBinaryString(file)
   }
-  removeEmpty() {
-    console.log(this.xlsData)
-    for (let i = 1; i < this.xlsData.length; ++i) {
-      if (this.xlsData[i].length == 0)
-        this.xlsData.splice(i, 1);
-    }
-  }
+
   completeSequence() {
     for (let i = 1; i < this.xlsData.length; ++i) {
       this.xlsData[i][0] = i
@@ -82,27 +83,10 @@ export class ImportCsvComponent implements OnInit {
       this.errorMessage = "请重新上传,原因: " + "没有数据";
       return false
     }
-    const categories = ['seq', 'packageId', 'channel', 'customerName', 'customerPhone', 'brandName', 'brandNameChinese', 'quantity', 'unitPrice', 'dimension', 'unit', 'weight', 'insuredAmount', 'insuranceFee', 'customTax', 'receiverName', 'receiverPhone', 'receiverProvince', 'receiverCity', 'receiverAddress', 'receiverZIP', 'receiverId', 'transferCompany', 'transferPackageId', 'created', 'SKU', 'comment']
-    for (let i = 1; i < this.xlsData.length; ++i) {
-      if (this.xlsData[i].length > categories.length) {
-        this.errorMessage = "请重新上传,原因: 第" + i + "行多输了";
-        return false
-      }
-    }
-
-    var badRows: Array<any> = []
-    for (let i = 1; i < this.xlsData.length; ++i) {
-      if (this.xlsData[i][1] === undefined)
-        badRows.push(i)
-    }
-    if (badRows.length != 0) {
-      this.errorMessage = "请重新上传,原因: " + "第" + badRows.join() + "行单号没找到"
-      return false
-    }
 
     for (let i = 1; i < this.xlsData.length; ++i) {
       if (this.xlsData[i][1].length != "cl86008927us".length) {
-        this.errorMessage = "请重新上传,原因: " + "第" + i + "行单号长度不对"
+        this.errorMessage = "请重新上传,原因: " + "第" + (i + 1) + " 行单号长度不对"
         return false
       }
     }
@@ -111,11 +95,47 @@ export class ImportCsvComponent implements OnInit {
     for (let i = 1; i < this.xlsData.length; ++i)
       packageIdSet.add(this.xlsData[i][1].toString())
     if (packageIdSet.size < this.xlsData.length - 1) {
-      this.errorMessage = "请重新上传,原因: " + "单号你怎么还能输重复了？"
+      this.errorMessage = "请重新上传,原因: " + "单号输重复了"
       return false
     }
     return true
   }
+
+  trimTable(): void {
+    console.log(this.xlsData)
+
+    this.warningMessages = []
+    const categories = ['seq', 'packageId', 'channel', 'customerName', 'customerPhone', 'brandName', 'brandNameChinese', 'quantity', 'unitPrice', 'dimension', 'unit', 'weight', 'insuredAmount', 'insuranceFee', 'customTax', 'receiverName', 'receiverPhone', 'receiverProvince', 'receiverCity', 'receiverAddress', 'receiverZIP', 'receiverId', 'transferCompany', 'transferPackageId', 'created', 'SKU', 'comment']
+
+    for (let i = 1; i < this.xlsData.length; ++i) {
+      if (this.xlsData[i].length > categories.length) {
+        this.warningMessages.push("第 " + (i + 1) + " 行多输了.\n");
+      }
+    }
+
+    var badRows: Array<any> = []
+    for (let i = 1; i < this.xlsData.length; ++i) {
+      if (this.xlsData[i][1] === undefined && this.xlsData[i].length >= 1)
+        badRows.push(i + 1)
+    }
+    if (badRows.length != 0) {
+      this.warningMessages.push("第 " + badRows.join(", ") + " 行单号没找到.\n")
+    }
+
+    let temp = this.xlsData;
+    this.xlsData = Array();
+    temp.forEach((row) => {
+      if (row.length > categories.length) {
+        this.xlsData.push(row.slice(0, categories.length))
+        return
+      }
+      if (!row[1])
+        return
+      this.xlsData.push(row)
+    })
+    console.log(this.xlsData)
+  }
+
   stringifyAll() {
     for (let i = 1; i < this.xlsData.length; ++i) {
       for (let j = 1; j < this.xlsData[i].length; ++j) {
@@ -136,10 +156,12 @@ export class ImportCsvComponent implements OnInit {
       this.toaster.toast(this.errorMessage)
       return
     }
-    if (this.validateData() === false) {
+    let validationCode = this.validateData();
+    if (!validationCode) {
       alert(this.errorMessage)
       return false
     }
+
     this.adminService.checkBatchNameExistRequest(this.batchName).subscribe({
       next: (response) => {
         if (response === true) {

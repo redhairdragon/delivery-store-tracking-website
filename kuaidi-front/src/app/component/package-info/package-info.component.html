@@ -1,8 +1,9 @@
 <div *ngIf="isPackageInfo()" id="main">
-    <mat-selection-list [multiple]="false" >
+    <mat-selection-list [multiple]="false" *ngIf="getStates().length>0">
         <mat-list-option *ngFor="let state of getStates()">
             <mat-icon mat-list-icon>{{getIcon(state["Description"])}}</mat-icon>
-                {{state["Description"]}} {{state["Time"]}}
+            {{state["Description"]}} {{state["Time"]}}
         </mat-list-option>
     </mat-selection-list>
+    <h2 *ngIf="getStates().length==0"> &#x1F61C;单号已经在系统里，但是管理员还没更新状态</h2>
 </div>
