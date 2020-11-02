@@ -40,6 +40,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { UploadPriceComponent } from './component/admin-page/upload-price/upload-price.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
     MatAutocompleteModule, MatTabsModule,
     MatTableModule,
     NgbAlertModule,
+    ClipboardModule,
   ],
   providers: [
     CookieService,

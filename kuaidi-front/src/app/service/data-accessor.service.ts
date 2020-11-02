@@ -17,10 +17,7 @@ export class DataAccessorService {
       callback({ "error": this.validateInput(pkgId) })
       return
     }
-    let infoArray = {
-      "content": [{ "Date": "1111", "Description": "Departed From US" },
-      { "Date": "11223", "Description": "Leaving Customer" }]
-    }
+
     this.packageInfoRequest(pkgId).subscribe({
       error: (resp) => {
         if (resp.status == 500)
@@ -28,19 +25,22 @@ export class DataAccessorService {
         if (resp.status == 404)
           callback({ "error": "单号不存在，重新检查/可能管理员还未上传" })
       }, next: (resp) => {
+        console.log(resp.body)
+        let shippingStates = resp.body.states;
+        let transferStates = resp.body.transfer;
         let states = []
-        for (let state in resp.body) {
-          if (resp.body[state])
+        for (let state in shippingStates) {
+          if (shippingStates[state])
             states.push({
               "Description": state,
               "Time":
-                new Date(resp.body[state]).toLocaleDateString()
+                new Date(shippingStates[state]).toLocaleDateString()
                 + " "
-                + new Date(resp.body[state]).toLocaleTimeString()
+                + new Date(shippingStates[state]).toLocaleTimeString()
             })
         }
         states.sort((a, b) => { return new Date(a.time).getTime() - new Date(b.time).getTime() })
-        callback({ "content": states })
+        callback({ "shippingStates": states, "transferStates": transferStates })
       }
     })
   }
@@ -94,9 +94,9 @@ export class DataAccessorService {
       return JSON.parse(history)
     return []
   }
-  clearLocalPackageSearchHistory(){
+  clearLocalPackageSearchHistory() {
     localStorage.removeItem("packageHistory")
   }
 
- 
+
 }

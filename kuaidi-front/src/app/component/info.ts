@@ -4,9 +4,11 @@ export enum InfoType {
 }
 export class Info {
     infotype: InfoType
-    content: any
-    constructor(infotype_: InfoType, content_: any) {
+    shippingStates: any
+    transferStates: any
+    constructor(infotype_: InfoType, shippingStates_: any, transferStates_: any) {
         this.infotype = infotype_
-        this.content = content_
+        this.transferStates = transferStates_
+        this.shippingStates = shippingStates_
     }
 }

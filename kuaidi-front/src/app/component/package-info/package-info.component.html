@@ -1,9 +1,18 @@
 <div *ngIf="isPackageInfo()" id="main">
-    <mat-selection-list [multiple]="false" *ngIf="getStates().length>0">
-        <mat-list-option *ngFor="let state of getStates()">
+    <mat-selection-list [multiple]="false" *ngIf="getShippingStates().length>0">
+        <mat-list-option *ngFor="let state of getShippingStates()">
             <mat-icon mat-list-icon>{{getIcon(state["Description"])}}</mat-icon>
             {{state["Description"]}} {{state["Time"]}}
         </mat-list-option>
+
+        <mat-list-option>
+            转运公司: {{getTransferStates()["转运公司"]}}
+        </mat-list-option>
+        <mat-list-option>
+            <a [href]="getTransferLink()">转运单号(已复制):
+                {{getTransferStates()["转运单号"]}}</a>
+        </mat-list-option>
     </mat-selection-list>
-    <h2 *ngIf="getStates().length==0"> &#x1F61C;单号已经在系统里，但是管理员还没更新状态</h2>
+    <h2 *ngIf="getShippingStates().length==0"> &#x1F61C;单号已经在系统里，但是管理员还没更新状态
+    </h2>
 </div>

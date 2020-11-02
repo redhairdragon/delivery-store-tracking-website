@@ -34,12 +34,12 @@ export class PackageSearchBarComponent implements OnInit {
 
     this.dataAccessor.lookUpPackage(this.inputPackageId, (info) => {
       if ("error" in info) {
-        let displayInfo = new Info(InfoType.ErrorResponse, info["error"]);
+        let displayInfo = new Info(InfoType.ErrorResponse, info["error"], null);
         this.toaster.toast(info["error"])
       }
       else {
         this.dataAccessor.setLocalPackageSearchHistory(this.inputPackageId)
-        this.displayInfo = new Info(InfoType.PackageInfo, info["content"]);
+        this.displayInfo = new Info(InfoType.PackageInfo, info["shippingStates"], info["transferStates"]);
       }
       this.loading = false;
     });
