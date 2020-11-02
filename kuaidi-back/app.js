@@ -57,6 +57,10 @@ app.use(express.static(path.join(__dirname, 'kuaidi-front')));
 // app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/customer/', customerRouter);
+app.all('/*', function (req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('kuaidi-front/index.html', { root: __dirname });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -74,9 +78,6 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-app.all('/*', function (req, res, next) {
-    // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('kuaidi-front/index.html', { root: __dirname });
-});
+
 
 module.exports = app;
