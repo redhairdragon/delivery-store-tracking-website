@@ -22,7 +22,7 @@ router.get('/packageInfo', async function (req, res, next) {
                 res.status(500).end();
                 return;
             }
-            console.log(results);
+            // console.log(results);
             let states = {};
             results.forEach(function (result) {
                 states[result.description] = result.updated;
@@ -33,7 +33,7 @@ router.get('/packageInfo', async function (req, res, next) {
                 "转运公司": transferCompany,
                 "转运单号": transferPackageId
             };
-            console.log(response);
+            // console.log(response);
             res.status(200).send(response).end();
         });
     });
