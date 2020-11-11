@@ -91,11 +91,18 @@ export class ImportCsvComponent implements OnInit {
       }
     }
 
+
+    var repeatId: string[] = [];
     var packageIdSet = new Set()
-    for (let i = 1; i < this.xlsData.length; ++i)
+    for (let i = 1; i < this.xlsData.length; ++i) {
+      if (packageIdSet.has(this.xlsData[i][1].toString()))
+        repeatId.push(this.xlsData[i][1].toString());
       packageIdSet.add(this.xlsData[i][1].toString())
+    }
+    console.log(repeatId);
     if (packageIdSet.size < this.xlsData.length - 1) {
-      this.errorMessage = "请重新上传,原因: " + "单号输重复了"
+      this.errorMessage = "请重新上传,原因: " + "单号输重复了";
+      this.warningMessages = ["这个不可无视: 出现了两次的单号"].concat(repeatId);
       return false
     }
     return true
