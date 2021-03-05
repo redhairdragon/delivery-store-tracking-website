@@ -54,6 +54,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'kuaidi-front')));
 
 
+app.all(/.*/, function (req, res, next) {
+    var host = req.header("host");
+    if (host.match(/^www\..*/i)) {
+        next();
+    } else {
+        res.redirect(301, "http://www." + host);
+    }
+});
+
 // app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/customer/', customerRouter);
