@@ -9,7 +9,7 @@
         <input maxlength="12" matInput type="search"
             [(ngModel)]="inputPackageId" placeholder="CL12345678US"
             (keydown.enter)="getTrackingInfo()" [matAutocomplete]="auto"
-            #searchInput spellcheck="false">
+            #searchInput #search spellcheck="false">
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option (click)="getTrackingInfo()"
                 *ngFor="let option of this.dataAccessor.getLocalPackageSearchHistory();"

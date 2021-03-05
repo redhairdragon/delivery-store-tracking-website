@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable } from '@angular/core';
+import { Component, OnInit, Input, Injectable, ElementRef } from '@angular/core';
 import { DataAccessorService } from '../../service/data-accessor.service'
 import { Info, InfoType } from '../info'
 import { ToastService } from "../../service/toast.service"
@@ -12,6 +12,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 })
 export class PackageSearchBarComponent implements OnInit {
   @ViewChild('searchInput', { read: MatAutocompleteTrigger }) searchInputElement: MatAutocompleteTrigger;
+  @ViewChild('search') search: ElementRef;
+
   @Input() inputPackageId: string;
   public displayInfo: Info;
   public loading: boolean = false;
@@ -31,11 +33,14 @@ export class PackageSearchBarComponent implements OnInit {
     setTimeout(() => {
       this.searchInputElement.closePanel();
     }, 200)
+    this.search.nativeElement.blur()
+
 
     this.dataAccessor.lookUpPackage(this.inputPackageId, (info) => {
       if ("error" in info) {
         let displayInfo = new Info(InfoType.ErrorResponse, info["error"], null);
         this.toaster.toast(info["error"])
+        window.alert(info["error"]);
       }
       else {
         this.dataAccessor.setLocalPackageSearchHistory(this.inputPackageId)
