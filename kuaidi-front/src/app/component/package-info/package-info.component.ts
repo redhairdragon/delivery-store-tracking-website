@@ -12,6 +12,7 @@ export class PackageInfoComponent implements OnInit {
   }
   @Input()
   public info: Info;
+  packageId: string = "";
 
   ngOnInit(): void {
     ;
@@ -30,9 +31,8 @@ export class PackageInfoComponent implements OnInit {
   }
 
   getTransferLink(): string {
+    this.packageId = this.getTransferStates()["转运单号"];
     let companyName = this.getTransferStates()["转运公司"];
-    let pkgId = this.getTransferStates()["转运单号"];
-    this.clipboard.copy(pkgId);
     if (companyName === "中通") {
       return "https://www.zto.com/express/expressCheck.html";
     }
@@ -40,7 +40,7 @@ export class PackageInfoComponent implements OnInit {
       return "http://www.yto.net.cn/";
     }
     if (companyName === "顺丰") {
-      return "https://www.sf-express.com/cn/sc/dynamic_function/waybill/#search/bill-number/" + pkgId;
+      return "https://www.sf-express.com/cn/sc/dynamic_function/waybill/#search/bill-number/" + this.packageId;
     }
     if (companyName === "ems" || companyName === "EMS") {
       return "http://www.ems.com.cn/mailtracking/you_jian_cha_xun.html";
